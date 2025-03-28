@@ -4,6 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { HttpClientModule } from '@angular/common/http';
 import { JugadoresComponent } from './componentes/jugadores/jugadores.component';
 import { FormsModule } from '@angular/forms';
 import { PartidoComponent } from './componentes/partido/partido.component';
@@ -19,6 +20,7 @@ import { ResumenComponent } from './componentes/resumen/resumen.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule ,
     FormsModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),

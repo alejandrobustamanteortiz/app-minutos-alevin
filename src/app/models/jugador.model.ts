@@ -4,4 +4,5 @@ export interface Jugador {
     dorsal: number
     enCampo: boolean
     minutosJugados: number
+    foto?: string;
 }

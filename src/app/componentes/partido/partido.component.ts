@@ -8,31 +8,34 @@ import { Jugador } from '../../models/jugador.model';
   styleUrls: ['./partido.component.css']
 })
 export class PartidoComponent {
-  partidoEnCurso: boolean = false;
-  intervalId: any;
-
   constructor(public jugadorService: JugadorService) {}
 
   get jugadores(): Jugador[] {
     return this.jugadorService.getJugadores();
   }
 
+  get titulares(): Jugador[] {
+    return this.jugadorService.getJugadores().filter(j => j.enCampo);
+  }
+  
+  get suplentes(): Jugador[] {
+    return this.jugadorService.getJugadores().filter(j => !j.enCampo);
+  }
+  
+
   iniciarPartido() {
-    if (this.partidoEnCurso) return;
-    this.partidoEnCurso = true;
-    this.intervalId = setInterval(() => {
-      this.jugadorService.sumarMinutoAJugadoresEnCampo();
-    }, 1000); // cada 60.000 ms = 1 minuto
+    this.jugadorService.iniciarPartido();
   }
 
   pausarPartido() {
-    if (!this.partidoEnCurso) return;
-    this.partidoEnCurso = false;
-    clearInterval(this.intervalId);
+    this.jugadorService.pausarPartido();
   }
 
   reiniciarPartido() {
-    this.jugadorService.reiniciarPartido();
-    this.pausarPartido();
+    this.jugadorService.reiniciarPartidoCompleto();
   }
+  alternarCampo(id: number) {
+    this.jugadorService.alternarCampo(id);
+  }
+  
 }

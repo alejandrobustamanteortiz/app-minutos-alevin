@@ -1,0 +1,14 @@
+[
+  { "nombre": "Pablo Gonzalez", "dorsal": 23, "foto": "pablo-gonzalez.png" },
+  { "nombre": "Pablo C", "dorsal": 3, "foto": "pablo-c.png" },
+  { "nombre": "Idrissa", "dorsal": 4, "foto": "idrissa.png" },
+  { "nombre": "Alejo", "dorsal": 5, "foto": "alejo.png" },
+  { "nombre": "Teddy", "dorsal": 6, "foto": "teddy.png" },
+  { "nombre": "Erick", "dorsal": 8, "foto": "erick.png" },
+  { "nombre": "Izan", "dorsal": 9, "foto": "izan.png" },
+  { "nombre": "Papsei", "dorsal": 10, "foto": "papsei.png" },
+  { "nombre": "Ilia", "dorsal": 11, "foto": "ilia.png" },
+  { "nombre": "Marc", "dorsal": 12, "foto": "marc.png" },
+  { "nombre": "Sergio", "dorsal": 14, "foto": "sergio.png" },
+  { "nombre": "Román", "dorsal": 15, "foto": "roman.png" }
+]
