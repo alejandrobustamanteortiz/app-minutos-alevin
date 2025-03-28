@@ -1,53 +1,38 @@
-<!-- CONTROL DEL PARTIDO -->
+<!-- CRONÓMETRO -->
 <div class="cronometro">
-  <p><strong>⏱ Tiempo:</strong> {{ jugadorService.cronometroDisplay }}</p>
+  <p><strong>⏱</strong> {{ jugadorService.cronometroDisplay }}</p>
   <button (click)="iniciarPartido()" [disabled]="jugadorService.partidoEnCurso">Iniciar</button>
   <button (click)="pausarPartido()" [disabled]="!jugadorService.partidoEnCurso">Pausar</button>
   <button (click)="reiniciarPartido()">Reiniciar</button>
 </div>
 
-<!-- TITULARES -->
-<h3 style="text-align: center;">Titulares (en campo)</h3>
-<div class="jugadores-grid">
-  <div
-    class="tarjeta-jugador"
-    *ngFor="let jugador of titulares"
-    [class.activo]="jugador.enCampo"
-  >
+<!-- TITULARES (ZONA DE CAMPO) -->
+<h3 class="seccion-titulo">En el campo</h3>
+<div class="campo-grid">
+  <div class="tarjeta-jugador titular" *ngFor="let jugador of titulares">
     <img
       [src]="'assets/fotos/' + (jugador.foto || 'default.png')"
+      alt="{{ jugador.nombre }}"
       class="foto-jugador"
-      [alt]="jugador.nombre"
     />
-    <div class="color" [ngStyle]="{ 'background-color': 'red' }"></div>
-    <div class="info">
-      <div><strong>{{ jugador.nombre }}</strong></div>
-      <div>Dorsal: {{ jugador.dorsal }}</div>
-      <div>Minutos: {{ jugador.minutosJugados }}</div>
-      <div>⚽ En campo</div>
-    </div>
-    <button (click)="alternarCampo(jugador.id)">Salir</button>
+    <div class="jugador-nombre">{{ jugador.nombre }}</div>
+    <div class="jugador-dorsal">#{{ jugador.dorsal }}</div>
+    <div class="jugador-minutos">🕒 {{ jugador.minutosJugados }}'</div>
+    <button class="btn-salir" (click)="alternarCampo(jugador.id)">Salir</button>
   </div>
 </div>
 
-<!-- SUPLENTES -->
-<h3 style="text-align: center; margin-top: 40px;">Suplentes</h3>
-<div class="jugadores-grid">
-  <div class="tarjeta-jugador" *ngFor="let jugador of suplentes">
+<!-- SUPLENTES (SCROLL HORIZONTAL) -->
+<h3 class="seccion-titulo">Suplentes</h3>
+<div class="suplentes-scroll">
+  <div class="tarjeta-jugador suplente" *ngFor="let jugador of suplentes">
     <img
       [src]="'assets/fotos/' + (jugador.foto || 'default.png')"
+      alt="{{ jugador.nombre }}"
       class="foto-jugador"
-      [alt]="jugador.nombre"
     />
-    <small style="font-size: 10px; color: gray;">
-      {{ 'assets/fotos/' + (jugador.foto || 'default.png') }}
-    </small>
-    <div class="color" [ngStyle]="{ 'background-color': 'green' }"></div>
-    <div class="info">
-      <div><strong>{{ jugador.nombre }}</strong></div>
-      <div>Dorsal: {{ jugador.dorsal }}</div>
-      <div>Minutos: {{ jugador.minutosJugados }}</div>
-    </div>
-    <button (click)="alternarCampo(jugador.id)">Entrar</button>
+    <div class="jugador-nombre">{{ jugador.nombre }}</div>
+    <div class="jugador-dorsal">#{{ jugador.dorsal }}</div>
+    <button class="btn-entrar" (click)="alternarCampo(jugador.id)">Entrar</button>
   </div>
 </div>

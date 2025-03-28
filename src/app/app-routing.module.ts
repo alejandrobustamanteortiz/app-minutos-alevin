@@ -6,7 +6,7 @@ import { ResumenComponent } from './componentes/resumen/resumen.component';
 
 
 const routes: Routes = [
-  { path: '', redirectTo: 'jugadores', pathMatch: 'full' },
+  { path: '', redirectTo: 'partido', pathMatch: 'full' },
   { path: 'jugadores', component: JugadoresComponent },
   { path: 'partido', component: PartidoComponent },
   { path: 'resumen', component: ResumenComponent }

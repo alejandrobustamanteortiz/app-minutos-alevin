@@ -12,25 +12,26 @@ export class JugadorService {
   partidoEnCurso: boolean = false;
   cronometroSegundos: number = 0;
   cronometroDisplay: string = '00:00';
+  fechaInicio: number | null = null;
 
   private cronometroInterval: any;
   private sumaMinutosInterval: any;
 
   constructor(private http: HttpClient) {
-    this.cargarJugadoresDesdeJson();
+    this.cargarEstado();
+    if (this.jugadores.length === 0) {
+      this.cargarJugadoresDesdeJson();
+    }
   }
 
-  // ✅ Cargar jugadores desde JSON
   cargarJugadoresDesdeJson() {
     this.http.get<any[]>('assets/data/jugadores.json').subscribe(lista => {
       lista.forEach(j => {
-        this.agregarJugador(j.nombre, j.dorsal, j.foto); // ← añade el campo foto
+        this.agregarJugador(j.nombre, j.dorsal, j.foto);
       });
     });
-    
   }
 
-  // ✅ Jugadores
   getJugadores(): Jugador[] {
     return this.jugadores;
   }
@@ -40,27 +41,28 @@ export class JugadorService {
       id: this.siguienteId++,
       nombre,
       dorsal,
-      foto: foto || '', // si viene, la usa; si no, queda vacío
+      foto: foto || '',
       enCampo: false,
       minutosJugados: 0
     });
+    this.guardarEstado();
   }
-  
 
   alternarCampo(jugadorId: number) {
     const jugador = this.jugadores.find(j => j.id === jugadorId);
     if (jugador) {
       jugador.enCampo = !jugador.enCampo;
+      this.guardarEstado();
     }
   }
 
-  // ✅ Minutos jugados
   sumarMinutoAJugadoresEnCampo() {
     this.jugadores.forEach(j => {
       if (j.enCampo) {
         j.minutosJugados++;
       }
     });
+    this.guardarEstado();
   }
 
   reiniciarPartido() {
@@ -68,30 +70,37 @@ export class JugadorService {
       j.enCampo = false;
       j.minutosJugados = 0;
     });
+    this.cronometroSegundos = 0;
+    this.actualizarDisplay();
+
+    this.fechaInicio = null;
+    this.partidoEnCurso = false;
+
+    this.borrarEstado();
   }
 
-  // ✅ Cronómetro
   iniciarPartido() {
     if (this.partidoEnCurso) return;
     this.partidoEnCurso = true;
 
-    // Cronómetro visual (cada segundo)
-    this.cronometroInterval = setInterval(() => {
-      this.cronometroSegundos++;
-      this.actualizarDisplay();
-    }, 1000);
+    if (!this.fechaInicio) {
+      this.fechaInicio = Date.now();
+    }
 
-    // Suma de minutos (cada 60 segundos reales — o usar 5000 para pruebas)
-    this.sumaMinutosInterval = setInterval(() => {
-      this.sumarMinutoAJugadoresEnCampo();
-    }, 1000);
+    this.iniciarIntervalos();
+    this.guardarEstado();
   }
 
   pausarPartido() {
     if (!this.partidoEnCurso) return;
-    this.partidoEnCurso = false;
+
     clearInterval(this.cronometroInterval);
     clearInterval(this.sumaMinutosInterval);
+
+    this.partidoEnCurso = false;
+    this.fechaInicio = null;
+
+    this.guardarEstado();
   }
 
   reiniciarPartidoCompleto() {
@@ -109,5 +118,62 @@ export class JugadorService {
 
   private formatear(num: number): string {
     return num < 10 ? '0' + num : num.toString();
+  }
+
+  private iniciarIntervalos() {
+    this.cronometroInterval = setInterval(() => {
+      this.cronometroSegundos++;
+      this.actualizarDisplay();
+    }, 1000);
+
+    this.sumaMinutosInterval = setInterval(() => {
+      this.sumarMinutoAJugadoresEnCampo();
+    }, 1000); // cambia a 60000 para producción
+  }
+
+  guardarEstado() {
+    const estado = {
+      jugadores: this.jugadores,
+      cronometroSegundos: this.cronometroSegundos,
+      fechaInicio: this.fechaInicio,
+      partidoEnCurso: this.partidoEnCurso
+    };
+    localStorage.setItem('estadoPartido', JSON.stringify(estado));
+  }
+
+  borrarEstado() {
+    localStorage.removeItem('estadoPartido');
+  }
+
+  cargarEstado() {
+    const data = localStorage.getItem('estadoPartido');
+    if (data) {
+      const estado = JSON.parse(data);
+      this.jugadores = estado.jugadores || [];
+      this.cronometroSegundos = estado.cronometroSegundos || 0;
+      this.fechaInicio = estado.fechaInicio || null;
+      this.partidoEnCurso = estado.partidoEnCurso || false;
+
+      if (this.partidoEnCurso && this.fechaInicio) {
+        const ahora = Date.now();
+        const segundosPasados = Math.floor((ahora - this.fechaInicio) / 1000);
+        const minutosPasados = Math.floor(segundosPasados / 60);
+
+        this.cronometroSegundos += segundosPasados;
+
+        this.jugadores.forEach(j => {
+          if (j.enCampo) {
+            j.minutosJugados += minutosPasados;
+          }
+        });
+
+        this.fechaInicio = ahora;
+        this.guardarEstado();
+
+        this.iniciarIntervalos();
+      }
+
+      this.actualizarDisplay();
+    }
   }
 }
