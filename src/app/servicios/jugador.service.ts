@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Jugador } from '../models/jugador.model';
 import { HttpClient } from '@angular/common/http';
+import { Jugador } from '../models/jugador.model';
+
+// Firebase (modular SDK)
+import { getDatabase, ref, set, Database } from '@angular/fire/database';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +21,23 @@ export class JugadorService {
   private sumaMinutosInterval: any;
 
   constructor(private http: HttpClient) {
+    // Firebase test (con delay para evitar error de inicialización)
+    setTimeout(() => {
+      try {
+        const db = getDatabase();
+        const testRef = ref(db, 'testFirebaseWrite');
+
+        set(testRef, {
+          mensaje: '🔥 Firebase conectado correctamente',
+          timestamp: new Date().toISOString()
+        })
+          .then(() => console.log('✅ Firebase FUNCIONA 🔥'))
+          .catch(err => console.error('❌ ERROR al escribir en Firebase', err));
+      } catch (error) {
+        console.error('🚨 Error al conectar con Firebase:', error);
+      }
+    }, 0);
+
     this.cargarEstado();
     if (this.jugadores.length === 0) {
       this.cargarJugadoresDesdeJson();
@@ -128,7 +148,7 @@ export class JugadorService {
 
     this.sumaMinutosInterval = setInterval(() => {
       this.sumarMinutoAJugadoresEnCampo();
-    }, 1000); // cambia a 60000 para producción
+    }, 1000); // Cambiar a 60000 para producción
   }
 
   guardarEstado() {
@@ -149,7 +169,16 @@ export class JugadorService {
     const data = localStorage.getItem('estadoPartido');
     if (data) {
       const estado = JSON.parse(data);
-      this.jugadores = estado.jugadores || [];
+
+      this.jugadores = (estado.jugadores || []).map((j: any, index: number) => ({
+        id: j.id ?? index + 1,
+        nombre: j.nombre,
+        dorsal: j.dorsal,
+        foto: j.foto || '',
+        enCampo: j.enCampo || false,
+        minutosJugados: j.minutosJugados || 0
+      }));
+
       this.cronometroSegundos = estado.cronometroSegundos || 0;
       this.fechaInicio = estado.fechaInicio || null;
       this.partidoEnCurso = estado.partidoEnCurso || false;
@@ -168,8 +197,8 @@ export class JugadorService {
         });
 
         this.fechaInicio = ahora;
-        this.guardarEstado();
 
+        this.guardarEstado();
         this.iniciarIntervalos();
       }
 
