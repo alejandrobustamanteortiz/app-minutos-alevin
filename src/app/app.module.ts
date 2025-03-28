@@ -4,14 +4,22 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { JugadoresComponent } from './componentes/jugadores/jugadores.component';
+import { FormsModule } from '@angular/forms';
+import { PartidoComponent } from './componentes/partido/partido.component';
+import { ResumenComponent } from './componentes/resumen/resumen.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    JugadoresComponent,
+    PartidoComponent,
+    ResumenComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    FormsModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: !isDevMode(),
       // Register the ServiceWorker as soon as the application is stable

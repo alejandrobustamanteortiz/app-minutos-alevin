@@ -1,0 +1,17 @@
+<h2>Partido en curso</h2>
+
+<!-- Botones de control -->
+<button (click)="iniciarPartido()" [disabled]="partidoEnCurso">Iniciar</button>
+<button (click)="pausarPartido()" [disabled]="!partidoEnCurso">Pausar</button>
+<button (click)="reiniciarPartido()">Reiniciar</button>
+
+<hr />
+
+<!-- Lista de jugadores activos con sus minutos -->
+<ul>
+  <li *ngFor="let jugador of jugadores">
+    <strong>{{ jugador.nombre }}</strong> (#{{ jugador.dorsal }}) -
+    {{ jugador.minutosJugados }} min
+    <span *ngIf="jugador.enCampo">⚽️ En campo</span>
+  </li>
+</ul>

@@ -1,0 +1,31 @@
+<h2>Gestión de Jugadores</h2>
+
+<!-- Formulario para añadir jugador -->
+<form (ngSubmit)="agregarJugador()" style="margin-bottom: 1rem;">
+  <input
+    [(ngModel)]="nuevoNombre"
+    name="nombre"
+    placeholder="Nombre"
+    required
+  />
+  <input
+    [(ngModel)]="nuevoDorsal"
+    name="dorsal"
+    type="number"
+    placeholder="Dorsal"
+    required
+  />
+  <button type="submit">Agregar</button>
+</form>
+
+<!-- Lista de jugadores -->
+<ul>
+  <li *ngFor="let jugador of jugadores">
+    <strong>{{ jugador.nombre }}</strong> (#{{ jugador.dorsal }})
+    - {{ jugador.minutosJugados }} min
+    <button (click)="alternarCampo(jugador)">
+      {{ jugador.enCampo ? 'Salir' : 'Entrar' }}
+    </button>
+    
+  </li>
+</ul>

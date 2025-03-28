@@ -1,0 +1,20 @@
+<h2>Resumen del Partido</h2>
+
+<ul>
+  <li *ngFor="let jugador of jugadores">
+    <strong>{{ jugador.nombre }}</strong> (#{{ jugador.dorsal }}) -
+    <span>{{ jugador.minutosJugados }} min</span>
+    
+    <!-- Barra visual simple -->
+    <div style="background: #eee; height: 10px; width: 100px;">
+      <div
+        [style.width.%]="jugador.minutosJugados"
+        style="background: #4caf50; height: 10px;">
+      </div>
+    </div>
+  </li>
+</ul>
+
+<hr />
+
+<button (click)="reiniciar()">Reiniciar partido</button>
