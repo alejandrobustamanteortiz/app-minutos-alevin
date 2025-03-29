@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Jugador } from '../models/jugador.model';
+import { onValue } from '@angular/fire/database';
 
-// Firebase (modular SDK)
-import { getDatabase, ref, set, Database } from '@angular/fire/database';
+// Firebase
+import { Database, getDatabase, ref, set, get } from '@angular/fire/database';
 
 @Injectable({
   providedIn: 'root'
@@ -20,35 +21,30 @@ export class JugadorService {
   private cronometroInterval: any;
   private sumaMinutosInterval: any;
 
+  private db: Database;
+
   constructor(private http: HttpClient) {
-    // Firebase test (con delay para evitar error de inicialización)
-    setTimeout(() => {
-      try {
-        const db = getDatabase();
-        const testRef = ref(db, 'testFirebaseWrite');
-
-        set(testRef, {
-          mensaje: '🔥 Firebase conectado correctamente',
-          timestamp: new Date().toISOString()
-        })
-          .then(() => console.log('✅ Firebase FUNCIONA 🔥'))
-          .catch(err => console.error('❌ ERROR al escribir en Firebase', err));
-      } catch (error) {
-        console.error('🚨 Error al conectar con Firebase:', error);
+    this.db = inject(Database);
+    this.cargarEstado().then(cargado => {
+      if (!cargado) {
+        // 🟡 Solo si no había estado remoto, cargar desde JSON
+        this.cargarJugadoresDesdeJson();
       }
-    }, 0);
+    });
+    this.inicializarEscuchaEnTiempoReal();
 
-    this.cargarEstado();
-    if (this.jugadores.length === 0) {
-      this.cargarJugadoresDesdeJson();
-    }
+    // Prueba de conexión (opcional)
+    const testRef = ref(this.db, 'testFirebaseWrite');
+    set(testRef, {
+      mensaje: '✅ Firebase conectado',
+      timestamp: new Date().toISOString()
+    }).then(() => console.log('🔥 Firebase OK'))
+      .catch((err: any) => console.error('❌ Firebase ERROR', err));
   }
 
   cargarJugadoresDesdeJson() {
     this.http.get<any[]>('assets/data/jugadores.json').subscribe(lista => {
-      lista.forEach(j => {
-        this.agregarJugador(j.nombre, j.dorsal, j.foto);
-      });
+      lista.forEach(j => this.agregarJugador(j.nombre, j.dorsal, j.foto));
     });
   }
 
@@ -101,6 +97,7 @@ export class JugadorService {
 
   iniciarPartido() {
     if (this.partidoEnCurso) return;
+
     this.partidoEnCurso = true;
 
     if (!this.fechaInicio) {
@@ -121,6 +118,40 @@ export class JugadorService {
     this.fechaInicio = null;
 
     this.guardarEstado();
+  }
+
+  inicializarEscuchaEnTiempoReal() {
+    const estadoRef = ref(this.db, 'partidoActual');
+  
+    onValue(estadoRef, snapshot => {
+      const estado = snapshot.val();
+      if (!estado) return;
+  
+      // 🧠 No sobreescribas si ya estás en ese estado
+      const eraEnCurso = this.partidoEnCurso;
+      this.jugadores = (estado.jugadores || []).map((j: any, i: number) => ({
+        id: j.id ?? i + 1,
+        nombre: j.nombre,
+        dorsal: j.dorsal,
+        foto: j.foto || '',
+        enCampo: j.enCampo || false,
+        minutosJugados: j.minutosJugados || 0
+      }));
+  
+      this.cronometroSegundos = estado.cronometroSegundos || 0;
+      this.fechaInicio = estado.fechaInicio || null;
+      this.partidoEnCurso = estado.partidoEnCurso || false;
+  
+      this.actualizarDisplay();
+  
+      // Si el estado cambia de pausado a en curso (o viceversa)
+      if (!this.partidoEnCurso) {
+        clearInterval(this.cronometroInterval);
+        clearInterval(this.sumaMinutosInterval);
+      } else if (!eraEnCurso && this.partidoEnCurso) {
+        this.iniciarIntervalos();
+      }
+    });
   }
 
   reiniciarPartidoCompleto() {
@@ -148,7 +179,7 @@ export class JugadorService {
 
     this.sumaMinutosInterval = setInterval(() => {
       this.sumarMinutoAJugadoresEnCampo();
-    }, 1000); // Cambiar a 60000 para producción
+    }, 1000); // Cambiar a 60000 en producción
   }
 
   guardarEstado() {
@@ -158,51 +189,66 @@ export class JugadorService {
       fechaInicio: this.fechaInicio,
       partidoEnCurso: this.partidoEnCurso
     };
-    localStorage.setItem('estadoPartido', JSON.stringify(estado));
+
+    set(ref(this.db, 'partidoActual'), estado)
+      .then(() => console.log('✅ Estado guardado en Firebase'))
+      .catch((error: any) => console.error('❌ Error al guardar en Firebase', error));
   }
 
   borrarEstado() {
-    localStorage.removeItem('estadoPartido');
+    set(ref(this.db, 'partidoActual'), null)
+      .then(() => console.log('🗑️ Estado eliminado de Firebase'))
+      .catch((error: any) => console.error('❌ Error al borrar en Firebase', error));
   }
 
-  cargarEstado() {
-    const data = localStorage.getItem('estadoPartido');
-    if (data) {
-      const estado = JSON.parse(data);
-
-      this.jugadores = (estado.jugadores || []).map((j: any, index: number) => ({
-        id: j.id ?? index + 1,
-        nombre: j.nombre,
-        dorsal: j.dorsal,
-        foto: j.foto || '',
-        enCampo: j.enCampo || false,
-        minutosJugados: j.minutosJugados || 0
-      }));
-
-      this.cronometroSegundos = estado.cronometroSegundos || 0;
-      this.fechaInicio = estado.fechaInicio || null;
-      this.partidoEnCurso = estado.partidoEnCurso || false;
-
-      if (this.partidoEnCurso && this.fechaInicio) {
-        const ahora = Date.now();
-        const segundosPasados = Math.floor((ahora - this.fechaInicio) / 1000);
-        const minutosPasados = Math.floor(segundosPasados / 60);
-
-        this.cronometroSegundos += segundosPasados;
-
-        this.jugadores.forEach(j => {
-          if (j.enCampo) {
-            j.minutosJugados += minutosPasados;
+  cargarEstado(): Promise<boolean> {
+    const estadoRef = ref(this.db, 'partidoActual');
+  
+    return get(estadoRef)
+      .then(snapshot => {
+        if (snapshot.exists()) {
+          const estado = snapshot.val();
+  
+          this.jugadores = (estado.jugadores || []).map((j: any, i: number) => ({
+            id: j.id ?? i + 1,
+            nombre: j.nombre,
+            dorsal: j.dorsal,
+            foto: j.foto || '',
+            enCampo: j.enCampo || false,
+            minutosJugados: j.minutosJugados || 0
+          }));
+  
+          this.cronometroSegundos = estado.cronometroSegundos || 0;
+          this.fechaInicio = estado.fechaInicio || null;
+          this.partidoEnCurso = estado.partidoEnCurso || false;
+  
+          if (this.partidoEnCurso && this.fechaInicio) {
+            const ahora = Date.now();
+            const segundosPasados = Math.floor((ahora - this.fechaInicio) / 1000);
+            const minutosPasados = Math.floor(segundosPasados / 60);
+  
+            this.cronometroSegundos += segundosPasados;
+  
+            this.jugadores.forEach(j => {
+              if (j.enCampo) {
+                j.minutosJugados += minutosPasados;
+              }
+            });
+  
+            this.fechaInicio = ahora;
+            this.guardarEstado();
+            this.iniciarIntervalos();
           }
-        });
-
-        this.fechaInicio = ahora;
-
-        this.guardarEstado();
-        this.iniciarIntervalos();
-      }
-
-      this.actualizarDisplay();
-    }
+  
+          this.actualizarDisplay();
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .catch((error: any) => {
+        console.error('❌ Error al cargar el estado desde Firebase', error);
+        return false;
+      });
   }
 }
