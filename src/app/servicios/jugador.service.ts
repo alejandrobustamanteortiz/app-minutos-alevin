@@ -96,17 +96,24 @@ export class JugadorService {
   }
 
   iniciarPartido() {
+    const jugadoresEnCampo = this.jugadores.filter(j => j.enCampo);
+    if (jugadoresEnCampo.length !== 8) {
+      alert('Debes seleccionar exactamente 8 jugadores en el campo para comenzar el partido.');
+      return;
+    }
+  
     if (this.partidoEnCurso) return;
-
+  
     this.partidoEnCurso = true;
-
+  
     if (!this.fechaInicio) {
       this.fechaInicio = Date.now();
     }
-
+  
     this.iniciarIntervalos();
     this.guardarEstado();
   }
+  
 
   pausarPartido() {
     if (!this.partidoEnCurso) return;
