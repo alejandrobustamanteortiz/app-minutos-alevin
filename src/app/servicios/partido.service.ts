@@ -25,7 +25,9 @@ export class PartidoService {
     private jugadorService: JugadorService,
     private firebaseService: FirebaseService
   ) {
+    this.cargarEstado();
     this.inicializarEscuchaEnTiempoReal(); // escuchando cambios
+    
   
   }
 
@@ -200,14 +202,16 @@ export class PartidoService {
   
       const eraEnCurso = this.partidoEnCurso;
   
-      this.jugadorService.setJugadores = (estado.jugadores || []).map((j: any, i: number) => ({
-        id: j.id ?? i + 1,
-        nombre: j.nombre,
-        dorsal: j.dorsal,
-        foto: j.foto || '',
-        enCampo: j.enCampo || false,
-        minutosJugados: j.minutosJugados || 0
-      }));
+      this.jugadorService.setJugadores(
+        (estado.jugadores || []).map((j: any, i: number) => ({
+          id: j.id ?? i + 1,
+          nombre: j.nombre,
+          dorsal: j.dorsal,
+          foto: j.foto || '',
+          enCampo: j.enCampo || false,
+          minutosJugados: j.minutosJugados || 0
+        }))
+      );
   
       this.cronometroSegundos = estado.cronometroSegundos || 0;
       this.fechaInicio = estado.fechaInicio || null;
@@ -221,6 +225,40 @@ export class PartidoService {
       } else if (!eraEnCurso && this.partidoEnCurso) {
         this.iniciarIntervalos();
       }
+    });
+  }
+
+  crearNuevoPartido(rival:string){
+    const id = Date.now().toString();
+    const nuevoPartido: Partido = {
+      id,
+      rival,
+      jugadores: this.jugadorService.getJugadores(),
+      cronometroSegundos: 0,
+      fechaInicio: null,
+      partidoEnCurso: false,
+      parte: 1,
+      primeraParteFinalizada: false,
+      segundaParteFinalizada: false
+    };
+
+    this.firebaseService.guardarEstadoPartido(id, nuevoPartido)
+    .then(() => {
+      console.log('✅ Nuevo partido guardado con ID:', id);
+      this.partidoId = id; // actualizar estado interno
+      this.partidoEnCurso = false;
+      this.cronometroSegundos = 0;
+      this.fechaInicio = null;
+      this.cronometroDisplay = '00:00';
+      this.parteActual = 1;
+      this.primeraParteFinalizada = false;
+      this.segundaParteFinalizada = false;
+
+      // escuchamos cambios del nuevo partido
+      this.inicializarEscuchaEnTiempoReal();
+    })
+    .catch(error => {
+      console.error('❌ Error al guardar el nuevo partido:', error);
     });
   }
 

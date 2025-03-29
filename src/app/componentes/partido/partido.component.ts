@@ -17,6 +17,8 @@ export class PartidoComponent {
     public partidoService: PartidoService
   ) {}
 
+  nombreRival: string = '';
+
   get jugadores(): Jugador[] {
     return this.jugadorService.getJugadores();
   }
@@ -36,6 +38,11 @@ export class PartidoComponent {
   iniciarPartido() {
     this.partidoService.iniciarPartido();
   }
+
+
+nuevoPartido() {
+  this.partidoService.crearNuevoPartido(this.nombreRival);
+}
 
   pausarPartido() {
     this.partidoService.pausarPartido();

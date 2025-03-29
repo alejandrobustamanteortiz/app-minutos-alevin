@@ -9,4 +9,5 @@ export interface Partido {
   parte: 1 | 2;
   primeraParteFinalizada: boolean;
   segundaParteFinalizada: boolean;
+  rival: string;
 }

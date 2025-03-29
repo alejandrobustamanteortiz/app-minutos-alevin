@@ -1,98 +1,131 @@
+/* 🌍 Fondo general */
+body {
+  background-color: #f0f4f8;
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+  padding: 1rem;
+}
+
+/* ⏱ Cronómetro y controles */
 .cronometro {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 1.5rem;
 }
+
+.cronometro input {
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin-right: 0.5rem;
+}
+
 .cronometro button {
-  margin: 4px;
-  padding: 8px 12px;
-  border-radius: 6px;
-  background-color: #1976d2;
-  color: white;
+  padding: 0.5rem 1rem;
+  margin: 0.2rem;
+  font-size: 0.85rem;
   border: none;
+  border-radius: 4px;
   cursor: pointer;
-  font-weight: 500;
-}
-.cronometro button:disabled {
-  background-color: #aaa;
+  transition: 0.2s;
 }
 
+.cronometro button:hover {
+  opacity: 0.9;
+}
+
+button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+button:not([disabled]):nth-child(1) { background-color: #4CAF50; color: white; }
+button:not([disabled]):nth-child(2) { background-color: #FF9800; color: white; }
+button:not([disabled]):nth-child(3) { background-color: #2196F3; color: white; }
+button:not([disabled]):nth-child(5) { background-color: #e91e63; color: white; }
+
+/* 🔤 Títulos */
 .seccion-titulo {
-  text-align: center;
-  font-weight: 600;
-  margin: 10px 0 8px;
-  font-size: 16px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 1rem 0 0.5rem;
+  color: #222;
 }
 
-.campo-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-  gap: 12px;
-  padding: 0 10px;
-}
-
-.suplentes-scroll {
+/* 🎯 Layout horizontal, sin scroll */
+.campo-grid, .suplentes-grid {
   display: flex;
-  overflow-x: auto;
-  gap: 12px;
-  padding: 0 10px;
-  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 2rem;
 }
 
+/* 🧍 Tarjeta de jugador */
 .tarjeta-jugador {
-  background: #fff;
+  width: 130px;
+  background-color: #ffffff;
   border-radius: 10px;
-  padding: 10px;
+  padding: 0.6rem;
   text-align: center;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  flex: 0 0 auto;
-  width: 120px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+
+.tarjeta-jugador:hover {
+  transform: translateY(-4px);
 }
 
 .foto-jugador {
-  width: 60px;
-  height: 60px;
+  width: 70px;
+  height: 70px;
   object-fit: cover;
   border-radius: 50%;
-  border: 2px solid #1976d2;
-  margin-bottom: 6px;
+  margin-bottom: 0.5rem;
+  border: 2px solid #ccc;
 }
 
+/* 🎨 Texto jugador */
 .jugador-nombre {
-  font-size: 14px;
-  font-weight: bold;
-  margin-bottom: 2px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
 }
 
-.jugador-dorsal {
-  font-size: 13px;
-  color: #666;
-  margin-bottom: 4px;
-}
-
+.jugador-dorsal,
 .jugador-minutos {
-  font-size: 13px;
-  margin-bottom: 6px;
+  font-size: 0.75rem;
   color: #444;
+  margin-bottom: 0.3rem;
+}
+
+/* 🔁 Botones de acción */
+.btn-salir,
+.btn-entrar {
+  font-size: 0.75rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  cursor: pointer;
+  border: none;
 }
 
 .btn-salir {
-  background-color: #d32f2f;
-  color: white;
-  border: none;
-  padding: 6px;
-  border-radius: 6px;
-  width: 100%;
-  font-size: 13px;
-  cursor: pointer;
+  background-color: #ffdddd;
+  color: #b30000;
 }
 
 .btn-entrar {
-  background-color: #388e3c;
-  color: white;
-  border: none;
-  padding: 6px;
-  border-radius: 6px;
-  width: 100%;
-  font-size: 13px;
-  cursor: pointer;
+  background-color: #ddffdd;
+  color: #007a00;
+}
+
+/* ✅ Estado: titulares / suplentes */
+.titular {
+  background-color: #e6f7e6; /* Verde claro */
+  border-top: 4px solid #4CAF50;
+}
+
+.suplente {
+  background-color: #ffe6e6; /* Rojo claro */
+  border-top: 4px solid #f44336;
 }
