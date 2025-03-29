@@ -48,6 +48,19 @@ export class FirebaseService {
       callback(data);
     });
   }
+  obtenerHistorialPartidos(): Promise<Partido[]> {
+    const historialRef = ref(this.db, 'partidos');
+    console.log('el historial es:'+historialRef)
+    return get(historialRef).then(snapshot => {
+      const data = snapshot.val();
+      if (!data) return [];
+  
+      return Object.entries(data).map(([id, partido]: any) => ({
+        id,
+        ...partido
+      }));
+    });
+  }
 
   testConexion() {
     const testRef = ref(this.db, 'testFirebaseWrite');

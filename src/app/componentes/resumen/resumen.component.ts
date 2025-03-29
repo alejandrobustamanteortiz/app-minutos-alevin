@@ -1,23 +1,22 @@
-import { Component } from '@angular/core';
-import { JugadorService } from '../../servicios/jugador.service';
-import { PartidoService } from '../../servicios/partido.service';
-import { Jugador } from '../../models/jugador.model';
+import { Component, OnInit } from '@angular/core';
+import { FirebaseService } from '../../servicios/firebase.service';
+import { Partido } from '../../models/partido.model';
 
 @Component({
   selector: 'app-resumen',
   templateUrl: './resumen.component.html',
   styleUrls: ['./resumen.component.css']
 })
-export class ResumenComponent {
+export class ResumenComponent implements OnInit {
+  partidos: Partido[] = [];
 
-  constructor(public jugadorService: JugadorService, public partidoService: PartidoService) {}
- 
+  constructor(private firebaseService: FirebaseService) {}
 
-  get jugadores(): Jugador[] {
-    return this.jugadorService.getJugadores();
-  }
-
-  reiniciar() {
-    this.partidoService.reiniciarPartido();
+  ngOnInit(): void {
+    this.firebaseService.obtenerHistorialPartidos()
+      .then(data => {
+        this.partidos = data.reverse(); // los últimos primero
+      });
   }
 }
+
