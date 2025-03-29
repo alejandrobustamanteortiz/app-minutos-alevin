@@ -1,8 +1,8 @@
 <!-- CRONÓMETRO -->
 <div class="cronometro">
-  <p><strong>⏱</strong> {{ jugadorService.cronometroDisplay }}</p>
-  <button (click)="iniciarPartido()" [disabled]="jugadorService.partidoEnCurso">Iniciar</button>
-  <button (click)="pausarPartido()" [disabled]="!jugadorService.partidoEnCurso">Pausar</button>
+  <p><strong>⏱</strong> {{ partidoService.cronometroDisplay }}</p>
+  <button (click)="iniciarPartido()" [disabled]="partidoService.partidoEnCurso">Iniciar</button>
+  <button (click)="pausarPartido()" [disabled]="!partidoService.partidoEnCurso">Pausar</button>
   <button (click)="reiniciarPartido()">Reiniciar</button>
 </div>
 
