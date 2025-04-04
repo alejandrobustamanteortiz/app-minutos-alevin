@@ -2,59 +2,87 @@ import { Component } from '@angular/core';
 import { Jugador } from '../../models/jugador.model';
 import { JugadorService } from '../../servicios/jugador.service';
 import { PartidoService } from '../../servicios/partido.service';
-
-
+import { FirebaseService } from 'src/app/servicios/firebase.service';
+import { Partido } from 'src/app/models/partido.model';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-partido',
   templateUrl: './partido.component.html',
-  styleUrls: ['./partido.component.css']
+  styleUrls: ['./partido.component.css'],
 })
 export class PartidoComponent {
+  partidos: Partido[] = [];
+  partidoId!: string;
+  partidoData: any;
+  jugadoresConvocados: any[] = [];
+  jugadoresTitulares: any[] = [];
+  jugadoresSuplentes: any[] = [];
+  nombreRival: string = '';
+  partidosDisponibles: { id: string; rival: string }[] = [];
+  partidoSeleccionadoId: string = '';
+
+  
+
+  ngOnInit() {
+
+    this.partidoId = this.route.snapshot.paramMap.get('id')!;
+    this.partidoService.obtenerPartido(this.partidoId).subscribe(partido => {
+    this.partidoData = partido;
+    this.jugadoresConvocados = partido.jugadoresConvocados ?? [];
+    this.jugadoresSuplentes = this.jugadoresConvocados;
+    })
+
+  }
 
   constructor(
     public jugadorService: JugadorService,
-    public partidoService: PartidoService
+    public partidoService: PartidoService,
+    private route: ActivatedRoute
   ) {}
 
-  nombreRival: string = '';
 
-  get jugadores(): Jugador[] {
-    return this.jugadorService.getJugadores();
-  }
+
 
   get titulares(): Jugador[] {
-    return this.jugadores.filter(j => j.enCampo);
+    return this.jugadoresConvocados?.filter((j: { enCampo: any; }) => j.enCampo) || [];
   }
 
   get suplentes(): Jugador[] {
-    return this.jugadores.filter(j => !j.enCampo);
+    return this.jugadoresConvocados?.filter((j: { enCampo: any; }) => !j.enCampo) || [];
   }
+
+
+
+
+
+  
 
   get cronometro(): string {
     return this.partidoService.cronometroDisplay;
   }
 
-  iniciarPartido() {
-    this.partidoService.iniciarPartido();
-  }
 
 
-nuevoPartido() {
-  this.partidoService.crearNuevoPartido(this.nombreRival);
-}
-
-  pausarPartido() {
-    this.partidoService.pausarPartido();
-  }
-
-  reiniciarPartido() {
-    this.partidoService.reiniciarPartidoCompleto();
   
+  alternarCampo(id: number): void {
+    // Buscar primero en suplentes
+    const indexSuplente = this.jugadoresSuplentes.findIndex(j => j.id === id);
+    if (indexSuplente !== -1) {
+      const jugador = this.jugadoresSuplentes[indexSuplente];
+      jugador.enCampo = true;
+      this.jugadoresSuplentes.splice(indexSuplente, 1);
+      this.jugadoresTitulares.push(jugador);
+      return;
+    }
 
-  }
-
-  alternarCampo(id: number) {
-    this.jugadorService.alternarCampo(id);
+    // Buscar en los que están en campo
+    const indexCampo = this.jugadoresTitulares.findIndex(j => j.id === id);
+    if (indexCampo !== -1) {
+      const jugador = this.jugadoresTitulares[indexCampo];
+      jugador.enCampo = false;
+      this.jugadoresTitulares.splice(indexCampo, 1);
+      this.jugadoresSuplentes.push(jugador);
+    }
   }
 }

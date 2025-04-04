@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { JugadorService } from './jugador.service';
 import { FirebaseService } from './firebase.service';
+import { push } from '@angular/fire/database';
 import { Partido } from '../models/partido.model';
+import { Database, ref, onValue, remove, set } from '@angular/fire/database';
+import { map, Observable } from 'rxjs';
+import { serverTimestamp } from 'firebase/database';
 
 @Injectable({
   providedIn: 'root',
@@ -12,255 +16,77 @@ export class PartidoService {
   private cronometroSegundos = 0;
   private fechaInicio: number | null = null;
   partidoEnCurso = false;
-
   private cronometroInterval: any;
   private sumaMinutosInterval: any;
-
   cronometroDisplay: string = '00:00';
-
   primeraParteFinalizada: boolean = false;
   segundaParteFinalizada: boolean = false;
 
   constructor(
+    private db: Database,
     private jugadorService: JugadorService,
     private firebaseService: FirebaseService
   ) {
-    this.cargarEstado();
-    this.inicializarEscuchaEnTiempoReal(); // escuchando cambios
-    
-  
+
   }
 
-  iniciarPartido() {
-    const jugadoresEnCampo = this.jugadorService.getTitulares();
-    if (jugadoresEnCampo.length !== 8) {
-      alert(
-        'Debes seleccionar exactamente 8 jugadores en el campo para comenzar el partido.'
-      );
-      return;
-    }
+  // 🔍 1. Obtener partidos en tiempo real
+  obtenerPartidos(): Observable<any[]> {
+    return new Observable((observer) => {
+      const partidosRef = ref(this.db, 'partidos');
 
-    if (this.partidoEnCurso) return;
+      onValue(partidosRef, (snapshot) => {
+        const data = snapshot.val();
 
-    this.partidoEnCurso = true;
-    if (!this.fechaInicio) {
-      this.fechaInicio = Date.now();
-    }
-
-    this.iniciarIntervalos();
-    this.guardarEstado();
-  }
-
-  reiniciarPartidoCompleto() {
-    this.pausarPartido();
-    this.reiniciarPartido();
-  }
-
-  reiniciarPartido() {
-    this.jugadorService.getJugadores().forEach((j) => {
-      j.enCampo = false;
-      j.minutosJugados = 0;
-    });
-
-    this.cronometroSegundos = 0;
-    this.fechaInicio = null;
-    this.partidoEnCurso = false;
-    this.cronometroDisplay = '00:00';
-  }
-
-  private iniciarIntervalos() {
-    this.cronometroInterval = setInterval(() => {
-      this.cronometroSegundos++;
-      this.actualizarDisplay();
-
-      // 🚨 Control automático de fin de parte
-      if (this.cronometroSegundos >= 1800) {
-        if (this.parteActual === 1 && !this.primeraParteFinalizada) {
-          this.finalizarPrimeraParte();
-        } else if (this.parteActual === 2 && !this.segundaParteFinalizada) {
-          this.finalizarSegundaParte();
-        }
-      }
-    }, 1000);
-
-    this.sumaMinutosInterval = setInterval(() => {
-      this.sumarMinutoAJugadoresEnCampo();
-    }, 1000); // Cambiar a 60000 para producción
-  }
-
-  private actualizarDisplay() {
-    const minutos = Math.floor(this.cronometroSegundos / 60);
-    const segundos = this.cronometroSegundos % 60;
-    this.cronometroDisplay = `${this.formatear(minutos)}:${this.formatear(
-      segundos
-    )}`;
-  }
-
-  public formatear(num: number): string {
-    return num < 10 ? '0' + num : num.toString();
-  }
-
-  sumarMinutoAJugadoresEnCampo() {
-    this.jugadorService.getJugadores().forEach((j) => {
-      if (j.enCampo) j.minutosJugados++;
-    });
-    this.guardarEstado();
-  }
-
-  private finalizarPrimeraParte() {
-    this.primeraParteFinalizada = true;
-    this.parteActual = 2;
-    this.pausarPartido();
-    console.log('⏱️ Primera parte finalizada automáticamente');
-  }
-
-  private finalizarSegundaParte() {
-    this.segundaParteFinalizada = true;
-    this.pausarPartido();
-    console.log('🏁 Partido finalizado automáticamente');
-  }
-
-  pausarPartido() {
-    if (!this.partidoEnCurso) return;
-
-    clearInterval(this.cronometroInterval);
-    clearInterval(this.sumaMinutosInterval);
-
-    this.partidoEnCurso = false;
-    this.fechaInicio = null;
-
-    this.guardarEstado();
-  }
-
-  guardarEstado() {
-    const estado = {
-      jugadores: this.jugadorService.getJugadores(),
-      cronometroSegundos: this.cronometroSegundos,
-      fechaInicio: this.fechaInicio,
-      partidoEnCurso: this.partidoEnCurso,
-    };
-
-    this.firebaseService
-      .guardarEstadoPartido('partidoActual', estado)
-      .then(() => console.log('✅ Estado guardado en Firebase'))
-      .catch((error) =>
-        console.error('❌ Error al guardar en Firebase', error)
-      );
-  }
-
-  cargarEstado(): Promise<boolean> {
-    return this.firebaseService.obtenerEstadoPartido(this.partidoId)
-      .then(snapshot => {
-        if (!snapshot.exists()) return false;
-  
-        const estado = snapshot.val();
-  
-        this.jugadorService.setJugadores(
-          (estado.jugadores || []).map((j: any, i: number) => ({
-            id: j.id ?? i + 1,
-            nombre: j.nombre,
-            dorsal: j.dorsal,
-            foto: j.foto || '',
-            enCampo: j.enCampo || false,
-            minutosJugados: j.minutosJugados || 0
-          }))
+        // Transformamos el objeto en array con ID incluido
+        const listaPartidos = Object.entries(data || {}).map(
+          ([id, partido]: [string, any]) => ({
+            id,
+            ...partido,
+          })
         );
-  
-        this.cronometroSegundos = estado.cronometroSegundos || 0;
-        this.fechaInicio = estado.fechaInicio || null;
-        this.partidoEnCurso = estado.partidoEnCurso || false;
-  
-        if (this.partidoEnCurso && this.fechaInicio) {
-          const ahora = Date.now();
-          const segundosPasados = Math.floor((ahora - this.fechaInicio) / 1000);
-          const minutosPasados = Math.floor(segundosPasados / 60);
-  
-          this.cronometroSegundos += segundosPasados;
-  
-          this.jugadorService.getJugadores().forEach(j => {
-            if (j.enCampo) {
-              j.minutosJugados += minutosPasados;
-            }
-          });
-  
-          this.fechaInicio = ahora;
-          this.iniciarIntervalos();
-        }
-  
-        this.actualizarDisplay();
-        return true;
-      })
-      .catch(error => {
-        console.error('❌ Error al cargar desde Firebase', error);
-        return false;
+
+        observer.next(listaPartidos);
       });
-  }
-
-  inicializarEscuchaEnTiempoReal() {
-    this.firebaseService.escucharEstadoPartido(this.partidoId, (estado) => {
-      if (!estado) return;
-  
-      const eraEnCurso = this.partidoEnCurso;
-  
-      this.jugadorService.setJugadores(
-        (estado.jugadores || []).map((j: any, i: number) => ({
-          id: j.id ?? i + 1,
-          nombre: j.nombre,
-          dorsal: j.dorsal,
-          foto: j.foto || '',
-          enCampo: j.enCampo || false,
-          minutosJugados: j.minutosJugados || 0
-        }))
-      );
-  
-      this.cronometroSegundos = estado.cronometroSegundos || 0;
-      this.fechaInicio = estado.fechaInicio || null;
-      this.partidoEnCurso = estado.partidoEnCurso || false;
-  
-      this.actualizarDisplay();
-  
-      if (!this.partidoEnCurso) {
-        clearInterval(this.cronometroInterval);
-        clearInterval(this.sumaMinutosInterval);
-      } else if (!eraEnCurso && this.partidoEnCurso) {
-        this.iniciarIntervalos();
-      }
     });
   }
 
-  crearNuevoPartido(rival:string){
-    const id = Date.now().toString();
-    const nuevoPartido: Partido = {
+  crearPartido(partido: Partido): Promise<void> {
+    return this.firebaseService.guardarPartido(partido);
+  }
+
+ 
+
+
+
+  // Obtener un partido específico
+  obtenerPartido(id: string): Observable<Partido> {
+    return this.firebaseService.obtenerRealtime(`partidos/${id}`).pipe(
+      map(data => {
+        if (!data) throw new Error('Partido no encontrado');
+        return this.mapearPartido(data, id);
+      })
+    );
+  }
+
+  private mapearPartido(data: any, id: string): Partido {
+    return {
       id,
-      rival,
-      jugadores: this.jugadorService.getJugadores(),
-      cronometroSegundos: 0,
-      fechaInicio: null,
-      partidoEnCurso: false,
-      parte: 1,
-      primeraParteFinalizada: false,
-      segundaParteFinalizada: false
+      rival: data.rival,
+      //fechaInicio: data.fechaInicio ? new Date(data.fechaInicio) : null,
+      creadoEn: data.creadoEn,
+      estado: data.estado || 'pendiente',
+      jugadoresConvocados: data.jugadoresConvocados || [],
+      cronometroSegundos: data.cronometroSegundos,
+      parte: data.parte,
+      duracionParte: data.duracionParte
+
+      // ... otros campos
     };
-
-    this.firebaseService.guardarEstadoPartido(id, nuevoPartido)
-    .then(() => {
-      console.log('✅ Nuevo partido guardado con ID:', id);
-      this.partidoId = id; // actualizar estado interno
-      this.partidoEnCurso = false;
-      this.cronometroSegundos = 0;
-      this.fechaInicio = null;
-      this.cronometroDisplay = '00:00';
-      this.parteActual = 1;
-      this.primeraParteFinalizada = false;
-      this.segundaParteFinalizada = false;
-
-      // escuchamos cambios del nuevo partido
-      this.inicializarEscuchaEnTiempoReal();
-    })
-    .catch(error => {
-      console.error('❌ Error al guardar el nuevo partido:', error);
-    });
   }
 
-  
+  eliminarPartido(id: string): Promise<void> {
+    console.log('🧪 Eliminando partido con ID:', id);
+    return this.firebaseService.eliminarPartido(id);
+  }
 }

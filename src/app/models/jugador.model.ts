@@ -1,5 +1,5 @@
 export interface Jugador {
-    id: number
+    id?: string
     nombre: string
     dorsal: number
     enCampo: boolean

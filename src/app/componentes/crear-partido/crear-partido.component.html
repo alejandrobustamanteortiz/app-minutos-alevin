@@ -1,0 +1,51 @@
+<!-- crear-partido.component.html -->
+<div class="crear-partido-container">
+  <h1 class="titulo">Crear Nuevo Partido</h1>
+
+  <form [formGroup]="partidoForm" (ngSubmit)="onSubmit()" class="formulario">
+    <!-- Campo Rival -->
+    <mat-form-field appearance="outline" class="campo-formulario">
+      <mat-label>Rival</mat-label>
+      <input
+        matInput
+        formControlName="rival"
+        placeholder="Nombre del equipo rival"
+        required
+      />
+      <mat-error *ngIf="partidoForm.get('rival')?.hasError('required')">
+        Este campo es obligatorio
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Selector de Fecha -->
+    <mat-form-field appearance="outline" class="campo-formulario">
+      <mat-label>Fecha del partido</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="fechaInicio" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <!-- Duración por Parte -->
+    <mat-form-field appearance="outline" class="campo-formulario">
+      <mat-label>Duración por parte (minutos)</mat-label>
+      <input matInput type="number" formControlName="duracionParte" min="1" />
+      <mat-error *ngIf="partidoForm.get('duracionParte')?.hasError('min')">
+        Mínimo 1 minuto
+      </mat-error>
+    </mat-form-field>
+    <hr />
+
+<h3>Selecciona los jugadores convocados:</h3>
+
+<div *ngFor="let jugador of jugadoresDisponibles" class="convocatoria-item">
+  <mat-checkbox (change)="toggleConvocado(jugador.id!)">
+    {{ jugador.nombre }}
+  </mat-checkbox>
+</div>
+
+<hr />
+
+<!-- Botón para enviar -->
+<button mat-raised-button color="primary" type="submit">
+  Crear Partido
+</button>

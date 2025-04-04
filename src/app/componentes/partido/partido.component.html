@@ -1,24 +1,11 @@
-<!-- ⏱ CRONÓMETRO Y CONTROLES -->
+
 <div class="cronometro">
-  <p><strong>⏱</strong> {{ partidoService.cronometroDisplay }}</p>
-
-  <button (click)="iniciarPartido()" [disabled]="partidoService.partidoEnCurso">▶ Iniciar</button>
-  <button (click)="pausarPartido()" [disabled]="!partidoService.partidoEnCurso">⏸ Pausar</button>
-  <button (click)="reiniciarPartido()">🔄 Reiniciar</button>
-
-  <input [(ngModel)]="nombreRival" placeholder="Rival..." />
-  <button (click)="nuevoPartido()">🎯 Nuevo Partido</button>
-</div>
 
 <!-- 🟢 TITULARES -->
-<h3 class="seccion-titulo">🟢 En el campo</h3>
+<h3 class="seccion-titulo">🟢 Titular</h3>
 <div class="campo-grid">
-  <div class="tarjeta-jugador titular" *ngFor="let jugador of titulares">
-    <img
-      [src]="'assets/fotos/' + (jugador.foto || 'default.png')"
-      alt="{{ jugador.nombre }}"
-      class="foto-jugador"
-    />
+  <div class="tarjeta-jugador titular" *ngFor="let jugador of jugadoresTitulares">
+    <img [src]="'assets/fotos/' + (jugador.foto || 'default.png')" alt="{{ jugador.nombre }}" class="foto-jugador" />
     <div class="jugador-nombre">{{ jugador.nombre }}</div>
     <div class="jugador-dorsal">#{{ jugador.dorsal }}</div>
     <div class="jugador-minutos">🕒 {{ jugador.minutosJugados }}'</div>
@@ -29,12 +16,8 @@
 <!-- 🔴 SUPLENTES -->
 <h3 class="seccion-titulo">🪑 Suplentes</h3>
 <div class="suplentes-grid">
-  <div class="tarjeta-jugador suplente" *ngFor="let jugador of suplentes">
-    <img
-      [src]="'assets/fotos/' + (jugador.foto || 'default.png')"
-      alt="{{ jugador.nombre }}"
-      class="foto-jugador"
-    />
+  <div class="tarjeta-jugador suplente" *ngFor="let jugador of jugadoresSuplentes">
+    <img [src]="'assets/fotos/' + (jugador.foto || 'default.png')" alt="{{ jugador.nombre }}" class="foto-jugador" />
     <div class="jugador-nombre">{{ jugador.nombre }}</div>
     <div class="jugador-dorsal">#{{ jugador.dorsal }}</div>
     <button class="btn-entrar" (click)="alternarCampo(jugador.id)">Entrar</button>

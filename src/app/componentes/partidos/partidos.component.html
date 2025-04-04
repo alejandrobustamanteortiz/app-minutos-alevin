@@ -1,0 +1,28 @@
+<h2>📅 Lista de partidos disponibles</h2>
+
+<div *ngIf="partidosDisponibles.length === 0" class="mensaje-vacio">
+  ⚠️ No hay partidos registrados aún.
+</div>
+
+<div *ngIf="partidosDisponibles.length > 0" class="contenedor-partidos">
+  <mat-card *ngFor="let partido of partidosDisponibles" class="partido-card">
+    <mat-card-header>
+      <mat-card-title>🆚 {{ partido.rival }}</mat-card-title>
+      <mat-card-subtitle>
+        🗓️ {{ partido.fechaInicio | date: 'fullDate' }}<br />
+        ⏰ Hora: {{ partido.fechaInicio | date: 'shortTime' }}
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <p><strong>⏱️ Duración por parte:</strong> {{ partido.duracionParte }} min</p>
+      <p><strong>📌 Estado:</strong> {{ partido.estado || 'pendiente' }}</p>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <button mat-button color="primary" (click)="verDetalle(partido)">👀 Ver</button>
+      <button mat-button color="accent" (click)="editarPartido(partido)">✏️ Editar</button>
+      <button mat-button color="warn" (click)="eliminarPartido(partido)">🗑️ Eliminar</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

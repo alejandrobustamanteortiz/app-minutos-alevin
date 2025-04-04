@@ -1,14 +1,18 @@
 [
-  { "nombre": "Pablo Gonzalez", "dorsal": 23, "foto": "pablo-gonzalez.png" },
-  { "nombre": "Pablo C", "dorsal": 3, "foto": "pablo-c.png" },
-  { "nombre": "Idrissa", "dorsal": 4, "foto": "idrissa.png" },
-  { "nombre": "Alejo", "dorsal": 5, "foto": "alejo.png" },
-  { "nombre": "Teddy", "dorsal": 6, "foto": "teddy.png" },
-  { "nombre": "Erick", "dorsal": 8, "foto": "erick.png" },
-  { "nombre": "Izan", "dorsal": 9, "foto": "izan.png" },
-  { "nombre": "Papsei", "dorsal": 10, "foto": "papsei.png" },
-  { "nombre": "Ilia", "dorsal": 11, "foto": "ilia.png" },
-  { "nombre": "Marc", "dorsal": 12, "foto": "marc.png" },
-  { "nombre": "Sergio", "dorsal": 14, "foto": "sergio.png" },
-  { "nombre": "Román", "dorsal": 15, "foto": "roman.png" }
+  
+    { "id": 1, "nombre": "Pablo GonzalezZ", "dorsal": 23, "foto": "pablo-gonzalez.png", "enCampo": false, "minutosJugados": 0 },
+    { "id": 2, "nombre": "Pablo C", "dorsal": 3, "foto": "pablo-c.png", "enCampo": false, "minutosJugados": 0 },
+    { "id": 3, "nombre": "Idrissa", "dorsal": 4, "foto": "idrissa.png", "enCampo": false, "minutosJugados": 0 },
+    { "id": 4, "nombre": "Alejo", "dorsal": 5, "foto": "alejo.png", "enCampo": false, "minutosJugados": 0 },
+    { "id": 5, "nombre": "Teddy", "dorsal": 6, "foto": "teddy.png", "enCampo": false, "minutosJugados": 0 },
+    { "id": 6, "nombre": "Erick", "dorsal": 8, "foto": "erick.png", "enCampo": false, "minutosJugados": 0 },
+    { "id": 7, "nombre": "Izan", "dorsal": 9, "foto": "izan.png", "enCampo": false, "minutosJugados": 0 },
+    { "id": 8, "nombre": "Papsei", "dorsal": 10, "foto": "papsei.png", "enCampo": false, "minutosJugados": 0 },
+    { "id": 9, "nombre": "Ilia", "dorsal": 11, "foto": "ilia.png", "enCampo": false, "minutosJugados": 0 },
+    { "id": 10, "nombre": "Marc", "dorsal": 12, "foto": "marc.png", "enCampo": false, "minutosJugados": 0 },
+    { "id": 11, "nombre": "Sergio", "dorsal": 14, "foto": "sergio.png", "enCampo": false, "minutosJugados": 0 },
+    { "id": 12, "nombre": "Román", "dorsal": 15, "foto": "roman.png", "enCampo": false, "minutosJugados": 0 },
+    { "id": 13, "nombre": "Ander", "dorsal": 25, "foto": "ander.png", "enCampo": false, "minutosJugados": 0 },
+    { "id": 14, "nombre": "Alvaro", "dorsal": 24, "foto": "alvaro.png", "enCampo": false, "minutosJugados": 0 }
+  
 ]

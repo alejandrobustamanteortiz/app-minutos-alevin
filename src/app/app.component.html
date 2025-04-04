@@ -1,8 +1,9 @@
 <nav style="margin-bottom: 1rem;">
-    <a routerLink="/jugadores" routerLinkActive="active">👥 Jugadores</a> |
-    <a routerLink="/partido" routerLinkActive="active">⚽ Partido</a> |
-    <a routerLink="/resumen" routerLinkActive="active">📊 Resumen</a>
-  </nav>
-  
-  <router-outlet></router-outlet>
-  
+  <a routerLink="/partidos" routerLinkActive="active">📋 Partidos</a> |
+  <a routerLink="/crear" routerLinkActive="active">➕ Crear Partido</a> |
+  <a routerLink="/jugadores" routerLinkActive="active">🧑‍🤝‍🧑 Jugadores</a> |
+  <a routerLink="/resumen" routerLinkActive="active">📊 Resumen</a>
+</nav>
+
+<!-- Aquí Angular carga el componente que corresponda según la ruta -->
+<router-outlet></router-outlet>

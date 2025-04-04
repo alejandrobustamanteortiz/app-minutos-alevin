@@ -5,8 +5,7 @@
 <ul class="lista-partidos">
   <li *ngFor="let partido of partidos">
     <strong>{{ partido.rival || 'Sin nombre' }}</strong>
-    <span>🕒 {{ partido.cronometroSegundos }}s</span> |
-    <span>📆 {{ partido.fechaInicio | date:'short' }}</span>
+    <!-- <span>🕒 {{ partido.cronometroSegundos }}s</span> | -->
     <span>⚽ Jugadores: {{ partido.jugadores.length }}</span>
     <button>Ver Detalles</button>
   </li>

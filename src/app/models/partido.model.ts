@@ -1,13 +1,15 @@
+import { Time } from '@angular/common';
 import { Jugador } from './jugador.model';
 
 export interface Partido {
   id: string;
-  jugadores: Jugador[];
+  jugadores?: any;
   cronometroSegundos: number;
-  fechaInicio: number | null;
-  partidoEnCurso: boolean;
   parte: 1 | 2;
-  primeraParteFinalizada: boolean;
-  segundaParteFinalizada: boolean;
+  duracionParte: number;
+  fechaInicio?: Date;
+  jugadoresConvocados: Jugador[] | null | undefined; // Permite undefined
+  estado: string; // <-- Añade esta propiedad;
   rival: string;
+  creadoEn: number | object;
 }
