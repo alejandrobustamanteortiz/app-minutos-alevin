@@ -27,6 +27,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { JugadorComponent } from './componentes/jugador/jugador.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatCardModule } from '@angular/material/card';
+import { EnJuegoComponent } from './componentes/en-juego/en-juego.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,9 @@ import { MatCardModule } from '@angular/material/card';
     ResumenComponent,
     CrearPartidoComponent,
     PartidosComponent,
-    JugadorComponent
+    JugadorComponent,
+    EnJuegoComponent,
+
   ],
   imports: [
     BrowserModule,

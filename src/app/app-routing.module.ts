@@ -5,6 +5,7 @@ import { PartidoComponent } from './componentes/partido/partido.component';
 import { ResumenComponent } from './componentes/resumen/resumen.component';
 import { PartidosComponent } from './componentes/partidos/partidos.component';
 import { CrearPartidoComponent } from './componentes/crear-partido/crear-partido.component';
+import { EnJuegoComponent } from './componentes/en-juego/en-juego.component';
 
 
 const routes: Routes = [
@@ -13,7 +14,8 @@ const routes: Routes = [
   { path: 'crear', component: CrearPartidoComponent },
   { path: 'partido/:id', component: PartidoComponent },
   { path: 'resumen', component: ResumenComponent },
-  { path: 'jugadores', component: JugadoresComponent }
+  { path: 'jugadores', component: JugadoresComponent },
+  { path: 'en-juego/:id', component: EnJuegoComponent },
 ];
 
 @NgModule({

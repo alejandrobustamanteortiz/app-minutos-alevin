@@ -3,6 +3,8 @@ export interface Jugador {
     nombre: string
     dorsal: number
     enCampo: boolean
+    posicion: string
+    valoracion?: number,
     minutosJugados: number
     foto?: string;
 }

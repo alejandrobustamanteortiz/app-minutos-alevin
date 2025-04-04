@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { JugadorService } from '../../servicios/jugador.service';
 import { Jugador } from '../../models/jugador.model';
 import { FirebaseService } from 'src/app/servicios/firebase.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-jugadores',
@@ -11,10 +12,17 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./jugadores.component.css'],
 })
 export class JugadoresComponent {
+  jugadorForm: FormGroup;
   constructor(
+    private fb: FormBuilder,
     private firebaseService: FirebaseService,
-    private fb: FormBuilder
-  ) {}
+    private router: Router
+  ) {
+    this.jugadorForm = this.fb.group({
+      nombre: ['', Validators.required],
+      dorsal: [''],
+    });
+  }
 
   jugadoresDisponibles: Jugador[] = [];
   jugador: Jugador[] = [];
@@ -36,15 +44,32 @@ export class JugadoresComponent {
     // ¡Siempre cancelar la suscripción!
     if (this.jugadoresSub) this.jugadoresSub.unsubscribe();
   }
+
+  onSubmit() {
+    if (this.jugadorForm.invalid) return;
+
+    const nuevoJugador = this.jugadorForm.value;
+
+    this.firebaseService.agregarJugador(nuevoJugador)
+      .then(() => {
+        alert('✅ Jugador creado');
+        this.router.navigate(['/plantilla']);
+      })
+      .catch(err => console.error('❌ Error al guardar jugador:', err));
+  }
+
+  
   
 
   agregarJugadorPrueba() {
 
     //hay que facer formulario correctamente
     const nuevoJugador: Omit<Jugador, 'id'> = {
-      nombre: 'Prueba Firebase',
-      foto: 'ander.png',
-      dorsal: 99,
+      nombre: 'Román',
+      valoracion: 92,
+      foto: 'assets/fotos/roman.png',
+      dorsal: 15,
+      posicion: 'DFC',
       minutosJugados: 0,
       enCampo: false,
     };
