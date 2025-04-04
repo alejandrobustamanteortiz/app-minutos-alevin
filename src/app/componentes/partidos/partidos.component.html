@@ -1,28 +1,37 @@
-<h2>📅 Lista de partidos disponibles</h2>
+<div class="partidos-dashboard">
+  <h1 class="titulo">Lista de Partidos</h1>
+  <p class="subtitulo">Todos los partidos finalizados, en juego y por jugar.</p>
+  <div class="boton-volver">
+    <button routerLink="/inicio" class="btn-volver">
+      ⬅️ Volver al Inicio
+    </button>
+  </div>
+  
 
-<div *ngIf="partidosDisponibles.length === 0" class="mensaje-vacio">
-  ⚠️ No hay partidos registrados aún.
-</div>
+  <div *ngIf="partidosDisponibles.length === 0" class="mensaje-vacio">
+    ⚠️ No hay partidos registrados aún.
+  </div>
 
-<div *ngIf="partidosDisponibles.length > 0" class="contenedor-partidos">
-  <mat-card *ngFor="let partido of partidosDisponibles" class="partido-card">
-    <mat-card-header>
-      <mat-card-title>🆚 {{ partido.rival }}</mat-card-title>
-      <mat-card-subtitle>
-        🗓️ {{ partido.fechaInicio | date: 'fullDate' }}<br />
-        ⏰ Hora: {{ partido.fechaInicio | date: 'shortTime' }}
-      </mat-card-subtitle>
-    </mat-card-header>
+  <div *ngIf="partidosDisponibles.length > 0" class="grid-partidos">
+    <div *ngFor="let partido of partidosDisponibles" class="partido-card">
+      <div class="partido-encabezado">
+        <h3>🆚 {{ partido.rival }}</h3>
+        <small>
+          🗓️ {{ partido.fechaInicio | date: 'fullDate' }}<br />
+          ⏰ {{ partido.fechaInicio | date: 'shortTime' }}
+        </small>
+      </div>
 
-    <mat-card-content>
-      <p><strong>⏱️ Duración por parte:</strong> {{ partido.duracionParte }} min</p>
-      <p><strong>📌 Estado:</strong> {{ partido.estado || 'pendiente' }}</p>
-    </mat-card-content>
+      <div class="partido-detalles">
+        <p><strong>⏱️ Duración:</strong> {{ partido.duracionParte }} min</p>
+        <p><strong>📌 Estado:</strong> {{ partido.estado || 'pendiente' }}</p>
+      </div>
 
-    <mat-card-actions>
-      <button mat-button color="primary" (click)="verDetalle(partido)">👀 Ver</button>
-      <button mat-button color="accent" (click)="editarPartido(partido)">✏️ Editar</button>
-      <button mat-button color="warn" (click)="eliminarPartido(partido)">🗑️ Eliminar</button>
-    </mat-card-actions>
-  </mat-card>
+      <div class="partido-acciones">
+        <button mat-stroked-button color="primary" (click)="verDetalle(partido)">👀 Ver</button>
+        <button mat-stroked-button color="accent" (click)="editarPartido(partido)">✏️ Editar</button>
+        <button mat-stroked-button color="warn" (click)="eliminarPartido(partido)">🗑️ Eliminar</button>
+      </div>
+    </div>
+  </div>
 </div>

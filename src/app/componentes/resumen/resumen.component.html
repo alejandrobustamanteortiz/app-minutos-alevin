@@ -1,12 +1,24 @@
-<h2>📊 Historial de Partidos</h2>
+<div class="resumen-page">
+  <h1 class="titulo">📊 Historial de Partidos</h1>
 
-<div *ngIf="partidos.length === 0">No hay partidos guardados todavía.</div>
+  <div *ngIf="partidos.length === 0" class="mensaje-vacio">
+    ⚠️ No hay partidos guardados todavía.
+  </div>
 
-<ul class="lista-partidos">
-  <li *ngFor="let partido of partidos">
-    <strong>{{ partido.rival || 'Sin nombre' }}</strong>
-    <!-- <span>🕒 {{ partido.cronometroSegundos }}s</span> | -->
-    <span>⚽ Jugadores: {{ partido.jugadores.length }}</span>
-    <button>Ver Detalles</button>
-  </li>
-</ul>
+  <ul class="lista-partidos">
+    <li *ngFor="let partido of partidos">
+      <div class="info-partido">
+        <strong>🆚 {{ partido.rival || 'Sin nombre' }}</strong>
+        <span>👥 Jugadores convocados: {{ partido.jugadores.length }}</span>
+        <span>⏱️ Tiempo jugado: {{ partido.cronometroSegundos || 0 }}s</span>
+        <span>🗓️ Fecha: {{ partido.fechaInicio | date: 'dd/MM/yyyy' }}</span>
+        <span>📌 Estado: {{ partido.estado || 'pendiente' }}</span>
+      </div>
+      <button class="btn-detalle">👁️ Ver Detalles</button>
+    </li>
+  </ul>
+
+  <div class="boton-volver">
+    <button routerLink="/inicio" class="btn-volver">⬅️ Volver al inicio</button>
+  </div>
+</div>

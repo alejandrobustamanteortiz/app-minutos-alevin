@@ -1,1 +1,50 @@
-<p>en-juego works!</p>
+<div class="en-juego-page">
+  <h1 class="titulo">⚽ En juego:{{rival}}</h1>
+
+  <!-- 🎛️ Panel de control -->
+  <div class="panel-control">
+    <div class="cronometro">{{ tiempo }}</div>
+    <div class="botones-control">
+      <button (click)="iniciarPartido()" [disabled]="partidoEnCurso">▶️ Iniciar</button>
+      <button (click)="pausarPartido()" [disabled]="!partidoEnCurso">⏸️ Pausar</button>
+      <button (click)="finalizarPartido()">⛔ Finalizar</button>
+    </div>
+  </div>
+
+  <!-- 🟩 Jugadores en el campo -->
+  <div class="campo-juego">
+    <div class="linea-jugadores">
+      <div class="jugador-en-campo" *ngFor="let jugador of titulares">
+        <img [src]="jugador.foto || '/assets/fotos/default.png'" class="avatar" />
+        <span class="nombre">{{ jugador.nombre }}</span>
+        <small class="minutos">{{ minutos[jugador.id!] || 0 }}'</small>
+        <button (click)="sustituir(jugador)">🔁</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 🪑 Suplentes -->
+  <h2 class="subtitulo">🪑 Suplentes</h2>
+  <div class="suplentes-lista">
+    <div class="jugador-suplente" *ngFor="let jugador of suplentes">
+      <img [src]="jugador.foto || '/assets/fotos/default.png'" class="avatar-mini" />
+      <span>{{ jugador.nombre }}</span>
+      <button (click)="meterAlCampo(jugador)">👟 Entrar</button>
+    </div>
+  </div>
+
+  <!-- 📊 Estadísticas -->
+  <div class="estadisticas">
+    <h3>📊 Estadísticas del partido</h3>
+    <ul>
+      <li *ngFor="let jugador of titulares">
+        {{ jugador.nombre }}: {{ minutos[jugador.id!] || 0 }} minutos jugados
+      </li>
+    </ul>
+  </div>
+
+  <!-- ⬅️ Botón volver al final -->
+  <div class="boton-volver">
+    <button routerLink="/inicio" class="btn-volver">⬅️ Volver al inicio</button>
+  </div>
+</div>

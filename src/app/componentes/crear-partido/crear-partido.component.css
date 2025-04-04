@@ -1,0 +1,162 @@
+.crear-partido-page {
+  min-height: 100vh;
+  background: linear-gradient(to bottom right, #0d1b2a, #1b263b);
+  color: white;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.titulo {
+  font-size: 2.4rem;
+  text-align: center;
+  margin-bottom: 0.5rem;
+  text-shadow: 2px 2px 6px black;
+}
+
+.subtitulo {
+  font-size: 1rem;
+  color: #ccc;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.boton-volver {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.btn-volver {
+  background: #1e88e5;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.btn-volver:hover {
+  background: #1565c0;
+  transform: translateY(-2px);
+}
+
+.card-formulario {
+  background: #ffffff10;
+  border: 2px solid #ffffff22;
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 700px;
+  width: 100%;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.grid-campos {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 600px) {
+  .grid-campos {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.campo label {
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+  display: block;
+}
+
+.campo input {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: none;
+  background: #ffffff22;
+  color: white;
+  font-size: 1rem;
+  width: 100%;
+}
+
+.campo input:focus {
+  outline: none;
+  background: #ffffff33;
+}
+
+/* 📋 Convocatoria */
+.convocatoria {
+  margin-top: 2.5rem;
+}
+
+.convocatoria h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.8rem;
+}
+
+.lista-jugadores {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 0.75rem;
+  background: #1b263b;
+  border: 2px solid #1e88e522;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.jugador-checkbox {
+  padding: 0.5rem;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+
+.jugador-checkbox:hover {
+  background-color: #ffffff14;
+}
+
+.jugador-checkbox.seleccionado {
+  background-color: #1e88e544;
+  border: 1px solid #1e88e5;
+}
+
+/* Texto y check */
+mat-checkbox .mat-checkbox-label {
+  color: white !important;
+  font-weight: 600;
+}
+
+mat-checkbox .mat-checkbox-background {
+  background-color: #1e88e5 !important;
+}
+
+.boton-centrado {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.jugador-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.jugador-foto {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #1e88e5;
+  background-color: #ffffff22;
+}
+
+::ng-deep .jugador-checkbox .mat-checkbox-label {
+  color: #ffffff !important;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.6); /* sutil mejora de contraste */
+}

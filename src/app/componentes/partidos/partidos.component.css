@@ -1,16 +1,102 @@
-.contenedor-partidos {
+.partidos-dashboard {
+  min-height: 100vh;
+  padding: 2rem 1rem;
+  background: linear-gradient(to bottom right, #0d1b2a, #1b263b); /* MISMO FONDO */
+  color: white;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  align-items: center;
 }
 
-.partido-card {
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.titulo {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  text-align: center;
 }
 
 .mensaje-vacio {
   font-style: italic;
-  color: #888;
-  padding: 12px;
+  color: #ccc;
+  padding: 1rem;
+  background: #ffffff12;
+  border: 2px dashed #ffffff22;
+  border-radius: 12px;
+  text-align: center;
+  max-width: 600px;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.grid-partidos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 1000px;
+  margin-top: 2rem;
+}
+
+.partido-card {
+  background: #ffffff12;
+  border: 2px solid #ffffff22;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease;
+}
+
+.partido-card:hover {
+  transform: translateY(-5px);
+  background: #00c85322;
+}
+
+.partido-encabezado h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  color: white;
+}
+
+.partido-encabezado small {
+  font-size: 0.85rem;
+  color: #ccc;
+}
+
+.partido-detalles {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+}
+
+.partido-acciones {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.boton-volver {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.btn-volver {
+  background: #1e88e5;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  text-decoration: none;
+}
+
+.btn-volver:hover {
+  background: #1565c0;
+  transform: translateY(-2px);
 }

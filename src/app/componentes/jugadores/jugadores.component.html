@@ -1,35 +1,26 @@
-<h1>📋 Plantilla de Jugadores</h1>
+<div class="plantilla-dashboard">
+  <div class="boton-volver">
+    <button routerLink="/inicio" class="btn-volver">
+      ⬅️ Volver al Inicio
+    </button>
+  </div>
 
-<!-- Botón de prueba -->
-<button (click)="agregarJugadorPrueba()">➕ Añadir jugador de prueba</button>
-
-<!-- Botón para ir al formulario -->
-<button (click)="agregarJugadorPrueba()" style="margin-left: 10px;">🧾 Añadir jugador manualmente</button>
-
-<hr />
-
-<!-- Lista de jugadores disponibles -->
-<div class="plantilla-fifa">
-  <h1 class="titulo">⚽ PLANTILLA OFICIAL</h1>
-
-  <div class="cartas-container">
-    <div class="carta-fifa" *ngFor="let jugador of jugadoresDisponibles">
-      <div class="carta-top">
-        <div class="carta-rating">{{ jugador.valoracion || '75' }}</div>
-        <div class="carta-posicion">{{ jugador.posicion || 'ST' }}</div>
-        <img src="/assets/fotos/default.png" class="carta-bandera" *ngIf="jugador.dorsal" />
-        <img src="/assets/fotos/banderas/spain.png" class="carta-club" *ngIf="jugador.dorsal" />
+  <div class="cartas-grid">
+    <div class="carta-jugador" *ngFor="let jugador of jugadoresDisponibles">
+      <div class="carta-header">
+        <div class="rating">{{ jugador.valoracion || '75' }}</div>
+        <div class="posicion">{{ jugador.posicion || 'ST' }}</div>
       </div>
 
       <img 
         [src]="jugador.foto || '/assets/fotos/default.png'" 
         alt="foto" 
-        class="carta-foto"
+        class="foto-jugador"
       />
 
-      <div class="carta-nombre">{{ jugador.nombre }}</div>
+      <div class="nombre-jugador">{{ jugador.nombre }}</div>
 
-      <div class="carta-stats">
+      <div class="stats-jugador">
         <div>
           <div>{{ jugador.dorsal || '70' }} PAC</div>
           <div>{{ jugador.dorsal || '70' }} SHO</div>
@@ -44,22 +35,3 @@
     </div>
   </div>
 </div>
-
-
-
-
-
-<hr>
-<h2>➕ Crear nuevo jugador</h2>
-
-<form [formGroup]="jugadorForm" (ngSubmit)="onSubmit()">
-  <label>Nombre:</label>
-  <input type="text" formControlName="nombre" required />
-
-
-  <label>Dorsal:</label>
-  <input type="number" formControlName="dorsal" />
-
-
-  <button type="submit" [disabled]="jugadorForm.invalid">Guardar jugador</button>
-</form>

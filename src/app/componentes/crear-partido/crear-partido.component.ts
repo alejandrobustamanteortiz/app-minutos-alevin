@@ -64,7 +64,7 @@ export class CrearPartidoComponent implements OnInit {
     const partido = {
       ...formValue,
       fechaInicio: formValue.fechaInicio ? formValue.fechaInicio.getTime() : null, // 👈 Transforma la fecha
-      convocados: Array.from(this.jugadoresConvocados),
+      jugadoresConvocados: Array.from(this.jugadoresConvocados),
     };
 
     this.partidoService.crearPartido(partido)

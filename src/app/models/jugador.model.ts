@@ -7,4 +7,5 @@ export interface Jugador {
     valoracion?: number,
     minutosJugados: number
     foto?: string;
+    titular?: boolean
 }

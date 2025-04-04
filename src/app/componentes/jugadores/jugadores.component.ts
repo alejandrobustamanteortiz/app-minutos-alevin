@@ -72,6 +72,7 @@ export class JugadoresComponent {
       posicion: 'DFC',
       minutosJugados: 0,
       enCampo: false,
+      titular:true
     };
     this.firebaseService
       .agregarJugador(nuevoJugador)

@@ -28,6 +28,7 @@ import { JugadorComponent } from './componentes/jugador/jugador.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatCardModule } from '@angular/material/card';
 import { EnJuegoComponent } from './componentes/en-juego/en-juego.component';
+import { InicioComponent } from './componentes/inicio/inicio.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { EnJuegoComponent } from './componentes/en-juego/en-juego.component';
     PartidosComponent,
     JugadorComponent,
     EnJuegoComponent,
+    InicioComponent,
 
   ],
   imports: [
