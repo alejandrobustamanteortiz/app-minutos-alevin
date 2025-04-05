@@ -154,9 +154,57 @@ mat-checkbox .mat-checkbox-background {
   background-color: #ffffff22;
 }
 
-::ng-deep .jugador-checkbox .mat-checkbox-label {
-  color: #ffffff !important;
-  font-weight: 600;
+::ng-deep .mat-form-dark .mat-form-field-flex {
+  background-color: #ffffff22; /* fondo translúcido como input */
+  border-radius: 6px;
+  color: white;
+  padding: 0 10px;
+  min-height: 40px; /* reduce la altura */
+}
+
+::ng-deep .mat-form-dark .mat-form-field-infix {
+  padding: 0.3rem 0; /* compacta el interior */
+  color: white;
+}
+
+::ng-deep .mat-form-dark .mat-select-value {
+  color: white;
+  font-size: 1rem;
+  padding: 0.3rem 0;
+}
+
+::ng-deep .mat-form-dark .mat-select-arrow {
+  color: white;
+}
+
+::ng-deep .mat-form-dark .mat-form-field-label {
+  color: #ccc !important;
+}
+
+::ng-deep .mat-form-dark .mat-form-field-underline {
+  display: none; /* quita la línea inferior fea */
+}
+
+::ng-deep .mat-form-dark .mat-form-field-wrapper {
+  padding-bottom: 0px; /* compacta */
+}
+
+::ng-deep .mat-form-dark .mat-select-panel {
+  background-color: #1b263b;
+  color: white;
+  border-radius: 6px;
+}
+
+::ng-deep .mat-form-dark .mat-option {
   font-size: 0.95rem;
-  text-shadow: 0 0 2px rgba(0, 0, 0, 0.6); /* sutil mejora de contraste */
+  padding: 8px 16px;
+}
+
+::ng-deep .mat-form-dark .mat-option.mat-selected {
+  background-color: #1e88e5;
+  color: white;
+}
+
+::ng-deep .mat-form-dark .mat-option:hover {
+  background-color: #1e88e544;
 }

@@ -1,6 +1,8 @@
 <div class="crear-partido-page">
   <h1 class="titulo">📝 Crear Partido</h1>
-  <p class="subtitulo">Rellena los datos del encuentro y convoca a tus jugadores</p>
+  <p class="subtitulo">
+    Rellena los datos del encuentro y convoca a tus jugadores
+  </p>
 
   <div class="boton-volver">
     <button routerLink="/inicio" class="btn-volver">⬅️ Volver al Inicio</button>
@@ -9,51 +11,95 @@
   <div class="card-formulario">
     <form [formGroup]="partidoForm" (ngSubmit)="onSubmit()">
       <div class="grid-campos">
+    <!-- Tipo partido -->
+    <div class="campo">
+      <label for="tipoPartido">🏟️ Tipo partido</label>
+      <mat-form-field appearance="fill" class="mat-form-dark full-width">
+        <mat-select id="tipoPartido" formControlName="tipoPartido" placeholder="Selecciona...">
+          <mat-option value="Amistoso">Amistoso</mat-option>
+          <mat-option value="Liga">Liga</mat-option>
+          <mat-option value="Torneo">Torneo</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
         <!-- Rival -->
         <div class="campo">
           <label for="rival">🏟️ Rival</label>
-          <input id="rival" type="text" formControlName="rival" placeholder="Nombre del equipo rival" />
+          <input
+            id="rival"
+            type="text"
+            formControlName="rival"
+            placeholder="Nombre del equipo rival"
+          />
         </div>
 
         <!-- Fecha -->
         <div class="campo">
           <label for="fechaInicio">📅 Fecha</label>
-          <input matInput [matDatepicker]="picker" id="fechaInicio" formControlName="fechaInicio" />
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            id="fechaInicio"
+            formControlName="fechaInicio"
+          />
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
         </div>
 
         <!-- Duración -->
         <div class="campo">
           <label for="duracion">⏱️ Duración por parte (min)</label>
-          <input id="duracion" type="number" formControlName="duracionParte" min="1" />
+          <input
+            id="duracion"
+            type="number"
+            formControlName="duracionParte"
+            min="1"
+          />
         </div>
       </div>
 
       <!-- 📋 Jugadores Convocados -->
-<div class="convocatoria">
-  <h3>📋 Selecion convocados</h3>
-  <p class="convocatoria-subtexto">Selecciona los jugadores que participarán en este partido.</p>
+      <div class="convocatoria">
+        <h3>📋 Selecion convocados</h3>
+        <p class="convocatoria-subtexto">
+          Selecciona los jugadores que participarán en este partido.
+        </p>
 
-  <div class="lista-jugadores">
-    <div *ngFor="let jugador of jugadoresDisponibles"
-         class="jugador-checkbox"
-         [ngClass]="{ 'seleccionado': jugadoresConvocados.has(jugador.id!) }">
-
-      <!-- ✅ FOTO + NOMBRE -->
-      <div class="jugador-info">
-        <img [src]="jugador.foto || '/assets/fotos/default.png'" alt="foto" class="jugador-foto" />
-        <mat-checkbox color="primary" (change)="toggleConvocado(jugador.id!)">
-          {{ jugador.nombre }}
-        </mat-checkbox>
+        <div class="lista-jugadores">
+          <div
+            *ngFor="let jugador of jugadoresDisponibles"
+            class="jugador-checkbox"
+            [ngClass]="{ seleccionado: jugadoresConvocados.has(jugador.id!) }"
+          >
+            <!-- ✅ FOTO + NOMBRE -->
+            <div class="jugador-info">
+              <img
+                [src]="jugador.foto || '/assets/fotos/default.png'"
+                alt="foto"
+                class="jugador-foto"
+              />
+              <mat-checkbox
+                color="primary"
+                (change)="toggleConvocado(jugador.id!)"
+              >
+                {{ jugador.nombre }}
+              </mat-checkbox>
+            </div>
+          </div>
+        </div>
       </div>
 
-    </div>
-  </div>
-</div>
-
       <div class="boton-centrado">
-        <button mat-raised-button color="primary" type="submit" [disabled]="partidoForm.invalid">
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="partidoForm.invalid"
+        >
           ✅ Crear Partido
         </button>
       </div>

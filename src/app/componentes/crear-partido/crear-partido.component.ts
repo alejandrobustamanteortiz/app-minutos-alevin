@@ -38,6 +38,7 @@ export class CrearPartidoComponent implements OnInit {
       rival: ['', Validators.required],
       fechaInicio: ['', Validators.required],
       duracionParte: [30, [Validators.required, Validators.min(1)]],
+      tipoPartido: ['', Validators.required]
     });
   }
 
@@ -65,7 +66,8 @@ export class CrearPartidoComponent implements OnInit {
       ...formValue,
       fechaInicio: formValue.fechaInicio ? formValue.fechaInicio.getTime() : null, // 👈 Transforma la fecha
       jugadoresConvocados: Array.from(this.jugadoresConvocados),
-      estado: "No comenzado"
+      estado: "No comenzado",
+      tipoPartido: formValue.tipoPartido
     };
 
     this.partidoService.crearPartido(partido)

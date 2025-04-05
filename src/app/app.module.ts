@@ -18,6 +18,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
 
 // ✅ Firebase moderno
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
@@ -54,6 +55,7 @@ import { InicioComponent } from './componentes/inicio/inicio.component';
     MatNativeDateModule,
     MatListModule,
     MatDatepickerModule,
+    MatSelectModule,
     ReactiveFormsModule,
     MatIconModule,
     MatCardModule,

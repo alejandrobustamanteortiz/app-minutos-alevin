@@ -75,11 +75,14 @@ export class PartidoService {
       rival: data.rival,
       //fechaInicio: data.fechaInicio ? new Date(data.fechaInicio) : null,
       creadoEn: data.creadoEn,
-      estado: data.estado || 'pendiente',
+      estado: data.estado || 'Sin estado',
       jugadoresConvocados: data.jugadoresConvocados || [],
+      tipoPartido: data.tipoPartido,
+      jornadaPartido: data.jornadaPartido,
       cronometroSegundos: data.cronometroSegundos,
       parte: data.parte,
-      duracionParte: data.duracionParte
+      duracionParte: data.duracionParte,
+      fechaInicio: data.fechaInicio
 
       // ... otros campos
     };

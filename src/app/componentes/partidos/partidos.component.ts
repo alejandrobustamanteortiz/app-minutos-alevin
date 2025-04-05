@@ -34,7 +34,7 @@ export class PartidosComponent implements OnInit {
   
 
 
-  verDetalle(partido: any) {
+  jugadrPartido(partido: any) {
     this.router.navigate(['/en-juego', partido.id]);
     // redirige o abre un diálogo
   }

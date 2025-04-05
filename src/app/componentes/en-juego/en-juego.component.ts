@@ -18,6 +18,7 @@ export class EnJuegoComponent implements OnInit, OnDestroy {
   minutos: { [jugadorId: string]: number } = {};
   tiempo: string = '00:00';
   partidoEnCurso: boolean = false;
+  fechaInicio!: Date
 
   private cronometroSub?: Subscription;
   private segundosTotales: number = 0;
@@ -41,6 +42,7 @@ export class EnJuegoComponent implements OnInit, OnDestroy {
       this.titulares = jugadores.filter(j => j.titular === true).slice(0, 8);
       this.suplentes = jugadores.filter(j => !j.titular);
       this.rival = partido.rival
+      this.fechaInicio = partido.fechaInicio
 
 
       // Inicializar minutos
