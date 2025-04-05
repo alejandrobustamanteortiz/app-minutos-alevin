@@ -17,11 +17,10 @@
       <div class="partido-encabezado">
         <h3>🆚 {{ partido.rival }}</h3>
         <small>
-          🗓️ {{ partido.fechaInicio | date: 'fullDate' }}<br />
+          🗓️ {{ partido.fechaInicio | date: 'dd/MM/yyy' }}<br />
           ⏰ {{ partido.fechaInicio | date: 'shortTime' }}
         </small>
       </div>
-
       <div class="partido-detalles">
         <p><strong>⏱️ Duración:</strong> {{ partido.duracionParte }} min</p>
         <p><strong>📌 Estado:</strong> {{ partido.estado || 'pendiente' }}</p>

@@ -15,7 +15,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatListModule } from '@angular/material/list';
-import {MatButtonModule} from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 // ✅ Firebase moderno
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
@@ -40,7 +42,7 @@ import { InicioComponent } from './componentes/inicio/inicio.component';
     PartidosComponent,
     JugadorComponent,
     EnJuegoComponent,
-    InicioComponent,
+    InicioComponent
 
   ],
   imports: [
@@ -53,8 +55,10 @@ import { InicioComponent } from './componentes/inicio/inicio.component';
     MatListModule,
     MatDatepickerModule,
     ReactiveFormsModule,
+    MatIconModule,
     MatCardModule,
     MatInputModule,
+    MatMenuModule,
     MatButtonModule,
     MatCheckboxModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),

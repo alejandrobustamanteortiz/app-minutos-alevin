@@ -65,11 +65,11 @@ export class JugadoresComponent {
 
     //hay que facer formulario correctamente
     const nuevoJugador: Omit<Jugador, 'id'> = {
-      nombre: 'Román',
-      valoracion: 92,
-      foto: 'assets/fotos/roman.png',
-      dorsal: 15,
-      posicion: 'DFC',
+      nombre: 'Erick',
+      valoracion: 75,
+      foto: 'assets/fotos/erick.png',
+      dorsal: 14,
+      posicion: 'DL',
       minutosJugados: 0,
       enCampo: false,
       titular:true
@@ -96,5 +96,16 @@ export class JugadoresComponent {
       .catch(err => {
         console.error('❌ Error al eliminar jugador:', err);
       });
+  }
+  
+
+  verJugador(jugador: Jugador) {
+    console.log("Ver jugador:", jugador);
+    // Aquí puedes abrir un modal o redirigir
+  }
+  
+  editarJugador(jugador: Jugador) {
+    console.log("Editar jugador:", jugador);
+    this.router.navigate(['/modificar-jugador', jugador.id]);
   }
 }

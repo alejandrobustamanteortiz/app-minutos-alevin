@@ -77,6 +77,13 @@
   justify-content: flex-end;
 }
 
+/* 🎛️ Menú de acciones */
+.menu-icon {
+  color: white;
+  padding: 0;
+  margin-left: auto;
+}
+
 .boton-volver {
   margin-bottom: 2rem;
   text-align: center;

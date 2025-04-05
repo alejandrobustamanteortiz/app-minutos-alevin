@@ -1,26 +1,42 @@
+<!-- jugadores.component.html -->
 <div class="plantilla-dashboard">
+  <h1 class="titulo">Plantilla Alevín E</h1>
+  <p class="subtitulo">Todos los jugadores disponibles para convocar.</p>
+
   <div class="boton-volver">
-    <button routerLink="/inicio" class="btn-volver">
-      ⬅️ Volver al Inicio
-    </button>
+    <button routerLink="/inicio" class="btn-volver">⬅️ Volver al Inicio</button>
   </div>
 
-  <div class="cartas-grid">
-    <div class="carta-jugador" *ngFor="let jugador of jugadoresDisponibles">
-      <div class="carta-header">
-        <div class="rating">{{ jugador.valoracion || '75' }}</div>
-        <div class="posicion">{{ jugador.posicion || 'ST' }}</div>
+  <div class="grid-jugadores">
+    <div class="jugador-card" *ngFor="let jugador of jugadoresDisponibles">
+      <div class="jugador-encabezado">
+        <div class="caja-top">
+          <span class="rating">{{ jugador.valoracion || '75' }}</span>
+          <span class="posicion">{{ jugador.posicion || 'ST' }}</span>
+        </div>
+
+        <button mat-icon-button [matMenuTriggerFor]="menu" class="menu-icon">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="verJugador(jugador)">
+            <mat-icon>visibility</mat-icon><span>Ver</span>
+          </button>
+          <button mat-menu-item (click)="editarJugador(jugador)">
+            <mat-icon>edit</mat-icon><span>Editar</span>
+          </button>
+          <button mat-menu-item (click)="eliminarJugador(jugador.id!)">
+            <mat-icon color="warn">delete</mat-icon><span>Eliminar</span>
+          </button>
+        </mat-menu>
       </div>
 
-      <img 
-        [src]="jugador.foto || '/assets/fotos/default.png'" 
-        alt="foto" 
-        class="foto-jugador"
-      />
+      <img [src]="jugador.foto || '/assets/fotos/default.png'" alt="foto" class="foto-jugador" />
 
       <div class="nombre-jugador">{{ jugador.nombre }}</div>
 
-      <div class="stats-jugador">
+      <div class="jugador-stats">
         <div>
           <div>{{ jugador.dorsal || '70' }} PAC</div>
           <div>{{ jugador.dorsal || '70' }} SHO</div>

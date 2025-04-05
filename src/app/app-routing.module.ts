@@ -7,6 +7,8 @@ import { PartidosComponent } from './componentes/partidos/partidos.component';
 import { CrearPartidoComponent } from './componentes/crear-partido/crear-partido.component';
 import { EnJuegoComponent } from './componentes/en-juego/en-juego.component';
 import { InicioComponent } from './componentes/inicio/inicio.component';
+import { ModificarJugadorComponent } from './componentes/modificar-jugador/modificar-jugador.component';
+
 
 
 const routes: Routes = [
@@ -18,6 +20,7 @@ const routes: Routes = [
   { path: 'resumen', component: ResumenComponent },
   { path: 'jugadores', component: JugadoresComponent },
   { path: 'en-juego/:id', component: EnJuegoComponent },
+  { path: 'modificar-jugador/:id', component: ModificarJugadorComponent },
   { path: '**', redirectTo: 'inicio' } // redirección si no encuentra ruta
 ];
 
