@@ -3,15 +3,15 @@ import { Jugador } from './jugador.model';
 
 export interface Partido {
   id: string;
-  jugadores?: any;
-  cronometroSegundos: number;
-  parte: 1 | 2;
+  //jugadores?: any;
+  //cronometroSegundos: number;
+  //parte: 1 | 2;
   duracionParte: number;
-  fechaInicio: Date;
-  jugadoresConvocados: Jugador[] | null | undefined; // Permite undefined
-  estado: string; // <-- Añade esta propiedad;
+  fechaPartido: Date;
+  jugadoresConvocados: Jugador[] | null | undefined;
+  estado: 'esperando' | 'live' | 'descanso' | 'finalizado';
   rival: string;
-  creadoEn: number | object;
-  tipoPartido: string
-  jornadaPartido: string
+  tipoPartido: 'amistoso' | 'liga' | 'torneo';
+  jornadaPartido: string;
+  //timeStampInicio: number;
 }

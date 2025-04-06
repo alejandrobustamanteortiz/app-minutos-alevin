@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Jugador } from '../../models/jugador.model';
 import { JugadorService } from '../../servicios/jugador.service';
 import { PartidoService } from '../../servicios/partido.service';
-import { FirebaseService } from 'src/app/servicios/firebase.service';
+import { FirebaseService } from 'src/app/servicios/firebase/firebase.service';
 import { Partido } from 'src/app/models/partido.model';
 import { ActivatedRoute } from '@angular/router';
 
@@ -26,12 +26,6 @@ export class PartidoComponent {
 
   ngOnInit() {
 
-    this.partidoId = this.route.snapshot.paramMap.get('id')!;
-    this.partidoService.obtenerPartido(this.partidoId).subscribe(partido => {
-    this.partidoData = partido;
-    this.jugadoresConvocados = partido.jugadoresConvocados ?? [];
-    this.jugadoresSuplentes = this.jugadoresConvocados;
-    })
 
   }
 

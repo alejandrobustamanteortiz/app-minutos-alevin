@@ -1,14 +1,13 @@
 <div class="en-juego-page">
   <h1 class="titulo">{{rival}}</h1>
-  <h3>{{fechaInicio| date : "dd/MM/yyy"}}</h3>
+  <!-- <h3>{{fechaInicio| date : "dd/MM/yyy"}}</h3> -->
 
   <!-- 🎛️ Panel de control -->
   <div class="panel-control">
-    <div class="cronometro">{{ tiempo }}</div>
+    <!-- <div class="cronometro">{{ tiempo }}</div> -->
     <div class="botones-control">
-      <button (click)="iniciarPartido()" [disabled]="partidoEnCurso">▶️ Iniciar</button>
-      <button (click)="pausarPartido()" [disabled]="!partidoEnCurso">⏸️ Pausar</button>
-      <button (click)="finalizarPartido()">⛔ Finalizar</button>
+      <!-- <button (click)="iniciarPartido()" [disabled]="partidoEnCurso">▶️ Iniciar</button> -->
+      <!-- <button (click)="finalizarPartido()">⛔ Finalizar</button> -->
     </div>
   </div>
 
@@ -18,8 +17,8 @@
       <div class="jugador-en-campo" *ngFor="let jugador of titulares">
         <img [src]="jugador.foto || '/assets/fotos/default.png'" class="avatar" />
         <span class="nombre">{{ jugador.nombre }}</span>
-        <small class="minutos">{{ minutos[jugador.id!] || 0 }}'</small>
-        <button (click)="sustituir(jugador)">🔁</button>
+        <!-- <small class="minutos">{{ minutos[jugador.id!] || 0 }}'</small> -->
+        <!-- <button (click)="sustituir(jugador)">🔁</button> -->
       </div>
     </div>
   </div>
@@ -30,7 +29,7 @@
     <div class="jugador-suplente" *ngFor="let jugador of suplentes">
       <img [src]="jugador.foto || '/assets/fotos/default.png'" class="avatar-mini" />
       <span>{{ jugador.nombre }}</span>
-      <button (click)="meterAlCampo(jugador)">👟 Entrar</button>
+      <!-- <button (click)="meterAlCampo(jugador)">👟 Entrar</button> -->
     </div>
   </div>
 
@@ -39,7 +38,7 @@
     <h3>📊 Estadísticas del partido</h3>
     <ul>
       <li *ngFor="let jugador of titulares">
-        {{ jugador.nombre }}: {{ minutos[jugador.id!] || 0 }} minutos jugados
+        <!-- {{ jugador.nombre }}: {{ minutos[jugador.id!] || 0 }} minutos jugados -->
       </li>
     </ul>
   </div>

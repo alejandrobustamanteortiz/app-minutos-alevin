@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FirebaseService } from '../../servicios/firebase.service';
+import { FirebaseService } from '../../servicios/firebase/firebase.service';
 import { Partido } from '../../models/partido.model';
 
 @Component({
@@ -13,10 +13,7 @@ export class ResumenComponent implements OnInit {
   constructor(private firebaseService: FirebaseService) {}
 
   ngOnInit(): void {
-    this.firebaseService.obtenerHistorialPartidos()
-      .then(data => {
-        this.partidos = data.reverse(); // los últimos primero
-      });
+   
   }
 }
 

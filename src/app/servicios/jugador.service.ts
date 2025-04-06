@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Jugador } from '../models/jugador.model';
-import { FirebaseService } from './firebase.service';
+import { FirebaseService } from './firebase/firebase.service';
 
 @Injectable({
   providedIn: 'root'

@@ -4,17 +4,17 @@
   <div class="boton-volver">
     <button routerLink="/inicio" class="btn-volver">⬅️ Volver al Inicio</button>
   </div>
-  <div *ngIf="partidosDisponibles.length === 0" class="mensaje-vacio">
+  <div *ngIf="partidos.length === 0" class="mensaje-vacio">
     ⚠️ No hay partidos registrados aún.
   </div>
-  <div *ngIf="partidosDisponibles.length > 0" class="grid-partidos">
-    <div *ngFor="let partido of partidosDisponibles" class="partido-card">
+  <div *ngIf="partidos.length > 0" class="grid-partidos">
+    <div *ngFor="let partido of partidos" class="partido-card">
       <div class="partido-encabezado">
         <h3>⚽ {{ partido.tipoPartido || "Amistoso" }}</h3>
         <h2>🆚 {{ partido.rival }}</h2>
         <small>
-          🗓️ {{ partido.fechaInicio | date : "dd/MM/yyy" }}<br />
-          ⏰ {{ partido.fechaInicio | date : "shortTime" }}
+          🗓️ {{ partido.fechaPartido | date : "dd/MM/yyy" }}<br />
+          ⏰ {{ partido.fechaPartido | date : "shortTime" }}
         </small>
       </div>
       <div class="partido-detalles">
@@ -22,13 +22,13 @@
         <p><strong>📌 Estado:</strong> {{ partido.estado || "pendiente" }}</p>
       </div>
       <div class="partido-acciones">
-        <button
+        <!-- <button
           mat-stroked-button
           color="primary"
           (click)="jugadrPartido(partido)"
         >
           ⚽ Jugar Partido
-        </button>
+        </button> -->
         <button
           mat-stroked-button
           color="accent"
@@ -39,7 +39,7 @@
         <button
           mat-stroked-button
           color="warn"
-          (click)="eliminarPartido(partido)"
+
         >
           🗑️ Eliminar
         </button>

@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { JugadorService } from './jugador.service';
-import { FirebaseService } from './firebase.service';
+import { FirebaseService } from './firebase/firebase.service';
 import { push } from '@angular/fire/database';
 import { Partido } from '../models/partido.model';
 import { Database, ref, onValue, remove, set } from '@angular/fire/database';
-import { map, Observable } from 'rxjs';
+import { map, Observable, timestamp } from 'rxjs';
 import { serverTimestamp } from 'firebase/database';
 
 @Injectable({
@@ -51,45 +51,17 @@ export class PartidoService {
     });
   }
 
-  crearPartido(partido: Partido): Promise<void> {
-    return this.firebaseService.guardarPartido(partido);
-  }
-
- 
-
-
-
-  // Obtener un partido específico
-  obtenerPartido(id: string): Observable<Partido> {
-    return this.firebaseService.obtenerRealtime(`partidos/${id}`).pipe(
-      map(data => {
-        if (!data) throw new Error('Partido no encontrado');
-        return this.mapearPartido(data, id);
-      })
-    );
-  }
 
   private mapearPartido(data: any, id: string): Partido {
     return {
       id,
       rival: data.rival,
-      //fechaInicio: data.fechaInicio ? new Date(data.fechaInicio) : null,
-      creadoEn: data.creadoEn,
       estado: data.estado || 'Sin estado',
       jugadoresConvocados: data.jugadoresConvocados || [],
       tipoPartido: data.tipoPartido,
+      fechaPartido: data.fechaPartido,
       jornadaPartido: data.jornadaPartido,
-      cronometroSegundos: data.cronometroSegundos,
-      parte: data.parte,
       duracionParte: data.duracionParte,
-      fechaInicio: data.fechaInicio
-
-      // ... otros campos
     };
-  }
-
-  eliminarPartido(id: string): Promise<void> {
-    console.log('🧪 Eliminando partido con ID:', id);
-    return this.firebaseService.eliminarPartido(id);
   }
 }

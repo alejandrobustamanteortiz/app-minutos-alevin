@@ -11,17 +11,21 @@
   <div class="card-formulario">
     <form [formGroup]="partidoForm" (ngSubmit)="onSubmit()">
       <div class="grid-campos">
-    <!-- Tipo partido -->
-    <div class="campo">
-      <label for="tipoPartido">🏟️ Tipo partido</label>
-      <mat-form-field appearance="fill" class="mat-form-dark full-width">
-        <mat-select id="tipoPartido" formControlName="tipoPartido" placeholder="Selecciona...">
-          <mat-option value="Amistoso">Amistoso</mat-option>
-          <mat-option value="Liga">Liga</mat-option>
-          <mat-option value="Torneo">Torneo</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
+        <!-- Tipo partido -->
+        <div class="campo">
+          <label for="tipoPartido">🏟️ Tipo partido</label>
+          <mat-form-field appearance="fill" class="mat-form-dark full-width">
+            <mat-select
+              id="tipoPartido"
+              formControlName="tipoPartido"
+              placeholder="Selecciona..."
+            >
+              <mat-option value="Amistoso">Amistoso</mat-option>
+              <mat-option value="Liga">Liga</mat-option>
+              <mat-option value="Torneo">Torneo</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
 
         <!-- Rival -->
         <div class="campo">
@@ -36,12 +40,12 @@
 
         <!-- Fecha -->
         <div class="campo">
-          <label for="fechaInicio">📅 Fecha</label>
+          <label for="fechaPartido">📅 Fecha</label>
           <input
             matInput
             [matDatepicker]="picker"
-            id="fechaInicio"
-            formControlName="fechaInicio"
+            id="fechaPartido"
+            formControlName="fechaPartido"
           />
           <mat-datepicker-toggle
             matSuffix
@@ -52,9 +56,9 @@
 
         <!-- Duración -->
         <div class="campo">
-          <label for="duracion">⏱️ Duración por parte (min)</label>
+          <label for="duracionParte">⏱️ Duración por parte (min)</label>
           <input
-            id="duracion"
+            id="duracionParte"
             type="number"
             formControlName="duracionParte"
             min="1"
@@ -64,7 +68,7 @@
 
       <!-- 📋 Jugadores Convocados -->
       <div class="convocatoria">
-        <h3>📋 Selecion convocados</h3>
+        <h3>📋 Selección convocados</h3>
         <p class="convocatoria-subtexto">
           Selecciona los jugadores que participarán en este partido.
         </p>
@@ -75,7 +79,6 @@
             class="jugador-checkbox"
             [ngClass]="{ seleccionado: jugadoresConvocados.has(jugador.id!) }"
           >
-            <!-- ✅ FOTO + NOMBRE -->
             <div class="jugador-info">
               <img
                 [src]="jugador.foto || '/assets/fotos/default.png'"

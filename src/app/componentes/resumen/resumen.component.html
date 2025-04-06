@@ -9,9 +9,8 @@
     <li *ngFor="let partido of partidos">
       <div class="info-partido">
         <strong>🆚 {{ partido.rival || 'Sin nombre' }}</strong>
-        <span>👥 Jugadores convocados: {{ partido.jugadores.length }}</span>
-        <span>⏱️ Tiempo jugado: {{ partido.cronometroSegundos || 0 }}s</span>
-        <span>🗓️ Fecha: {{ partido.fechaInicio | date: 'dd/MM/yyyy' }}</span>
+        <!-- <span>👥 Jugadores convocados: {{ partido.jugadoresConvocados.length }}</span> -->
+        <span>🗓️ Fecha: {{ partido.fechaPartido | date: 'dd/MM/yyyy' }}</span>
         <span>📌 Estado: {{ partido.estado || 'pendiente' }}</span>
       </div>
       <button class="btn-detalle">👁️ Ver Detalles</button>

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { JugadorService } from '../../servicios/jugador.service';
 import { Jugador } from '../../models/jugador.model';
-import { FirebaseService } from 'src/app/servicios/firebase.service';
+import { FirebaseService } from 'src/app/servicios/firebase/firebase.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
@@ -30,14 +30,7 @@ export class JugadoresComponent {
 
 
   ngOnInit() {
-    this.jugadoresSub = this.firebaseService.getJugadores().subscribe({
-      next: (jugadores) => {
-        this.jugadoresDisponibles = jugadores;
-      },
-      error: (err) => {
-        console.error('Error en tiempo real:', err);
-      }
-    });
+
   }
 
   ngOnDestroy() {
@@ -50,12 +43,6 @@ export class JugadoresComponent {
 
     const nuevoJugador = this.jugadorForm.value;
 
-    this.firebaseService.agregarJugador(nuevoJugador)
-      .then(() => {
-        alert('✅ Jugador creado');
-        this.router.navigate(['/plantilla']);
-      })
-      .catch(err => console.error('❌ Error al guardar jugador:', err));
   }
 
   
@@ -63,39 +50,11 @@ export class JugadoresComponent {
 
   agregarJugadorPrueba() {
 
-    //hay que facer formulario correctamente
-    const nuevoJugador: Omit<Jugador, 'id'> = {
-      nombre: 'Erick',
-      valoracion: 75,
-      foto: 'assets/fotos/erick.png',
-      dorsal: 14,
-      posicion: 'DL',
-      minutosJugados: 0,
-      enCampo: false,
-      titular:true
-    };
-    this.firebaseService
-      .agregarJugador(nuevoJugador)
-      .then(() => {
-        console.log('✅ Jugador añadido correctamente');
-      })
-      .catch((err) => {
-        console.error('❌ Error al añadir jugador:', err);
-      });
+  
   }
 
   eliminarJugador(id: string) {
-    const confirmar = confirm('¿Seguro que quieres eliminar este jugador?');
-    if (!confirmar) return;
-  
-    this.firebaseService.eliminarJugador(id)
-      .then(() => {
-        console.log('🗑️ Jugador eliminado correctamente');
-        this.jugadoresDisponibles = this.jugadoresDisponibles.filter(j => j.id !== id);
-      })
-      .catch(err => {
-        console.error('❌ Error al eliminar jugador:', err);
-      });
+
   }
   
 

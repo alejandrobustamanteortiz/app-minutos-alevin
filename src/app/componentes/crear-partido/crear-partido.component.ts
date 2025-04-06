@@ -13,10 +13,12 @@ import { Jugador } from 'src/app/models/jugador.model';
 import { PartidoService } from 'src/app/servicios/partido.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormControl } from '@angular/forms';
-import { FirebaseService } from 'src/app/servicios/firebase.service';
+import { FirebaseService } from 'src/app/servicios/firebase/firebase.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { JugadorService } from 'src/app/servicios/jugador.service';
+import { PartidosService } from 'src/app/servicios/dominio/partidos.service';
+import { JugadoresService } from 'src/app/servicios/dominio/jugadores.service.service';
 
 @Component({
   selector: 'app-crear-partido',
@@ -24,61 +26,33 @@ import { JugadorService } from 'src/app/servicios/jugador.service';
   styleUrls: ['./crear-partido.component.css'],
 })
 export class CrearPartidoComponent implements OnInit {
-  partidoForm: FormGroup;
+  partidoForm!: FormGroup;
   jugadoresDisponibles: Jugador[] = [];
   jugadoresConvocados: Set<string> = new Set(); // IDs seleccionados
 
   constructor(
     private fb: FormBuilder,
-    private firebaseService: FirebaseService,
-    private partidoService: PartidoService,
+    private jugadoresService: JugadoresService,
+    private partidosService: PartidosService,
     private router: Router
-  ) {
+  ) {}
+
+  ngOnInit(): void {
     this.partidoForm = this.fb.group({
+      tipoPartido: ['', Validators.required],
+      jornadaPartido: [''],
       rival: ['', Validators.required],
-      fechaInicio: ['', Validators.required],
-      duracionParte: [30, [Validators.required, Validators.min(1)]],
-      tipoPartido: ['', Validators.required]
+      fechaPartido: ['', Validators.required],
+      duracionParte: [30, [Validators.required, Validators.min(1)]]
+    });
+  
+    // ✅ Cargar jugadores desde el servicio
+    this.jugadoresService.obtenerJugadores().then(jugadores => {
+      this.jugadoresDisponibles = jugadores;
     });
   }
 
-  async ngOnInit() {
-    try {
-      this.jugadoresDisponibles = await this.firebaseService.getJugadoresOnce();
-      console.log(
-        '📦 Jugadores disponibles para la convocatoria:',
-        this.jugadoresDisponibles
-      );
-    } catch (err) {
-      console.error('❌ Error al obtener jugadores', err);
-    }
-  }
-
-  onSubmit() {
-    if (this.partidoForm.invalid || this.jugadoresConvocados.size === 0) {
-      alert('⚠️ Completa todos los campos y selecciona al menos un jugador.');
-      return;
-    }
-
-    const formValue = this.partidoForm.value;
-
-    const partido = {
-      ...formValue,
-      fechaInicio: formValue.fechaInicio ? formValue.fechaInicio.getTime() : null, // 👈 Transforma la fecha
-      jugadoresConvocados: Array.from(this.jugadoresConvocados),
-      estado: "No comenzado",
-      tipoPartido: formValue.tipoPartido
-    };
-
-    this.partidoService.crearPartido(partido)
-      .then(() => {
-        alert('✅ Partido creado con éxito');
-        this.router.navigate(['/']); // Redirige donde quieras
-      })
-      .catch((err) => {
-        console.error('❌ Error al guardar el partido:', err);
-      });
-  }
+  
   toggleConvocado(jugadorId: string) {
     if (this.jugadoresConvocados.has(jugadorId)) {
       this.jugadoresConvocados.delete(jugadorId); // ❌ Quitar de la convocatoria
@@ -86,4 +60,26 @@ export class CrearPartidoComponent implements OnInit {
       this.jugadoresConvocados.add(jugadorId); // ✅ Añadir a la convocatoria
     }
   }
+  async onSubmit(): Promise<void> {
+    if (this.partidoForm.invalid || this.jugadoresConvocados.size === 0) {
+      alert('⚠️ Rellena todos los campos y selecciona jugadores.');
+      return;
+    }
+  
+    try {
+      const nuevoId = await this.partidosService.crearPartidoDesdeFormulario(
+        this.partidoForm.value,
+        this.jugadoresDisponibles,
+        Array.from(this.jugadoresConvocados)
+      );
+  
+      alert('✅ Partido creado con ID: ' + nuevoId);
+      this.partidoForm.reset();
+      this.jugadoresConvocados.clear();
+    } catch (err) {
+      console.error('❌ Error al guardar partido:', err);
+      alert('Hubo un error al guardar el partido.');
+    }
+  }
+  
 }
