@@ -8,6 +8,7 @@ import { CrearPartidoComponent } from './componentes/crear-partido/crear-partido
 import { EnJuegoComponent } from './componentes/en-juego/en-juego.component';
 import { InicioComponent } from './componentes/inicio/inicio.component';
 import { ModificarJugadorComponent } from './componentes/modificar-jugador/modificar-jugador.component';
+import { AlineacionComponent } from './componentes/alineacion/alineacion.component';
 
 
 
@@ -18,8 +19,10 @@ const routes: Routes = [
   { path: 'crear', component: CrearPartidoComponent },
   { path: 'partido/:id', component: PartidoComponent },
   { path: 'resumen', component: ResumenComponent },
+  { path: 'alineacion', component: AlineacionComponent },
   { path: 'jugadores', component: JugadoresComponent },
   { path: 'en-juego/:id', component: EnJuegoComponent },
+  { path: 'alineacion/:id', component: AlineacionComponent },
   { path: 'modificar-jugador/:id', component: ModificarJugadorComponent },
   { path: '**', redirectTo: 'inicio' } // redirección si no encuentra ruta
 ];

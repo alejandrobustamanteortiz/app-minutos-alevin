@@ -5,6 +5,7 @@ import { FirebaseService } from 'src/app/servicios/firebase/firebase.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { JugadoresService } from 'src/app/servicios/dominio/jugadores.service.service';
 
 @Component({
   selector: 'app-jugadores',
@@ -15,7 +16,7 @@ export class JugadoresComponent {
   jugadorForm: FormGroup;
   constructor(
     private fb: FormBuilder,
-    private firebaseService: FirebaseService,
+    private jugadoresService: JugadoresService,
     private router: Router
   ) {
     this.jugadorForm = this.fb.group({
@@ -30,6 +31,9 @@ export class JugadoresComponent {
 
 
   ngOnInit() {
+    this.jugadoresService.obtenerJugadores().then(jugadores => {
+      this.jugadoresDisponibles = jugadores
+    })
 
   }
 

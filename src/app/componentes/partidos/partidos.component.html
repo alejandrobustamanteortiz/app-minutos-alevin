@@ -39,6 +39,7 @@
         <button
           mat-stroked-button
           color="warn"
+          (click)="eliminarPartido(partido.id)"
 
         >
           🗑️ Eliminar
@@ -47,6 +48,11 @@
         <button *ngIf="partido.estado === 'live'" disabled class="estado-live">
           🟢 EN JUEGO
         </button>
+        <button (click)="verPartidoDesdeFirebase(partido.id)">📡 Ver desde Firebase</button>
+        <button [routerLink]="['/alineacion', partido.id]" class="btn-alineacion">
+          ⬅️ Ir a Alineación
+        </button>
+
       </div>
     </div>
   </div>

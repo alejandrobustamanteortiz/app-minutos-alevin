@@ -36,4 +36,33 @@ export class PartidosComponent implements OnInit {
   editarPartido(partido: Partido): void {
     this.router.navigate(['/editar', partido.id]);
   }
+  eliminarPartido(partidoId: string): void {
+    const confirmado = confirm('¿Estás seguro de que quieres eliminar este partido? 🗑️');
+    if (!confirmado) return;
+
+    this.partidosService.eliminarPartido(partidoId)
+      .then(() => {
+        // Elimina el partido localmente para actualizar la vista
+        this.partidos = this.partidos.filter(p => p.id !== partidoId);
+      })
+      .catch(err => {
+        console.error('Error al eliminar el partido:', err);
+        alert('❌ No se pudo eliminar el partido. Inténtalo de nuevo.');
+      });
+  }
+
+  //prueba
+  verPartidoDesdeFirebase(partidoId: string): void {
+    this.partidosService.obtenerPartidoById(partidoId)
+      .then(partido => {
+        console.log('✅ Partido obtenido desde Firebase:', partido.rival);
+        this.router.navigate(['/alineacion', partido.id]);
+      })
+      .catch(err => {
+        console.error('❌ Error al obtener el partido:', err);
+      });
+  }
 }
+
+
+

@@ -32,6 +32,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatCardModule } from '@angular/material/card';
 import { EnJuegoComponent } from './componentes/en-juego/en-juego.component';
 import { InicioComponent } from './componentes/inicio/inicio.component';
+import { AlineacionComponent } from './componentes/alineacion/alineacion.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { InicioComponent } from './componentes/inicio/inicio.component';
     PartidosComponent,
     JugadorComponent,
     EnJuegoComponent,
-    InicioComponent
+    InicioComponent,
+    AlineacionComponent
 
   ],
   imports: [

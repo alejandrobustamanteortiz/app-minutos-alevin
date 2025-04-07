@@ -39,4 +39,12 @@ export class PartidosService {
   obtenerTodosLosPartidos(): Promise<Partido[]> {
     return this.firebase.getAllPartidosOnce();
   }
+
+  obtenerPartidoById(id: string): Promise<Partido> {
+    return this.firebase.getPartidoByIdOnce(id);
+  }
+
+  eliminarPartido(id: string): Promise<void> {
+    return this.firebase.eliminarPartido(id);
+  }
 }

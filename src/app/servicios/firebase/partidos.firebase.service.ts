@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Database, ref, get, push, set } from '@angular/fire/database';
+import { Database, ref, get, push, set, remove } from '@angular/fire/database';
 import { Partido } from 'src/app/models/partido.model';
 
 @Injectable({ providedIn: 'root' })
@@ -50,4 +50,14 @@ export class PartidosFirebaseService {
 
     return set(nuevoRef, partido).then(() => nuevoRef.key!);
   }
+
+  /**
+ * Elimina un partido de Firebase dado su ID.
+ * @param id ID del partido a eliminar
+ * @returns Promesa que resuelve cuando el partido ha sido eliminado
+ */
+eliminarPartido(id: string): Promise<void> {
+  const partidoRef = ref(this.db, `partidos/${id}`);
+  return remove(partidoRef);
+}
 }

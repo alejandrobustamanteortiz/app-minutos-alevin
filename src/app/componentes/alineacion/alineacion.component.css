@@ -1,0 +1,156 @@
+.alineacion-page {
+  background: linear-gradient(to bottom right, #0d1b2a, #1b263b);
+  min-height: 100vh;
+  color: white;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.titulo {
+  font-size: 1.8rem;
+  text-align: center;
+}
+
+.subtitulo {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Campo táctico */
+.campo-tactico {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  background-color: #13293d;
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 2px solid #1e88e5;
+  box-shadow: 0 0 8px #1e88e544;
+}
+
+.linea-tactica {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.jugador {
+  width: 70px;
+  height: 70px;
+  background-color: #1e2f45;
+  border-radius: 50%;
+  border: 2px dashed #1e88e5;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+  box-shadow: 0 0 5px #1e88e544;
+  transition: transform 0.2s ease;
+  text-align: center;
+}
+
+.jugador span {
+  font-size: 0.65rem;
+  color: #ccc;
+  margin-top: 4px;
+}
+
+.jugador:hover {
+  background-color: #1e88e544;
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+/* SUPLENTES */
+.suplentes-scroll {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+}
+
+.jugador-suplente {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 1rem;
+  background-color: #ffffff10;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  transition: background 0.2s ease, transform 0.15s ease;
+  min-width: fit-content;
+}
+
+.jugador-suplente:hover {
+  background-color: #1e88e544;
+  transform: translateY(-2px);
+}
+
+.jugador-suplente span {
+  font-size: 0.9rem;
+  color: #eee;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* Foto de jugador */
+.jugador-foto {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #1e88e5;
+  background-color: #ffffff22;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* Scrollbar estilizado */
+.suplentes-scroll::-webkit-scrollbar {
+  height: 6px;
+}
+
+.suplentes-scroll::-webkit-scrollbar-thumb {
+  background: #1e88e5;
+  border-radius: 4px;
+}
+
+/* Botón volver */
+.btn-volver {
+  background: #1e88e5;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  text-decoration: none;
+}
+
+.btn-volver:hover {
+  background: #1565c0;
+  transform: translateY(-2px);
+}
+
+/* Responsive ajustes */
+@media (max-width: 600px) {
+  .jugador-foto {
+    width: 32px;
+    height: 32px;
+  }
+
+  .jugador span {
+    font-size: 0.6rem;
+  }
+
+  .jugador-suplente span {
+    font-size: 0.8rem;
+  }
+}
