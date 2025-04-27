@@ -27,6 +27,10 @@ export class PartidosService {
       duracionParte: form.duracionParte,
       jugadoresConvocados: convocados,
       estado: 'esperando',
+      alineaciones: {
+        primeraParte: [],
+        segundaParte: []
+      }
       //creadoEn: Date.now()
     };
 

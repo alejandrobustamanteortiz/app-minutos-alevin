@@ -3,44 +3,42 @@
     <div class="boton-volver">
       <button routerLink="/inicio" class="btn-volver">⬅️ Volver al Inicio</button>
     </div>
-  
-    <!-- BLOQUE TITULARES -->
-    <div class="campo-tactico">
-  
-      <!-- Línea 1 -->
-      <div class="linea-tactica">
-        <div class="jugador">⚽<span>Delantero</span></div>
-      </div>
-  
-      <!-- Línea 2 -->
-      <div class="linea-tactica">
-        <div class="jugador">🎯<span>Ext Izq</span></div>
-        <div class="jugador">🔁<span>MCD</span></div>
-        <div class="jugador">🔁<span>MCO</span></div>
-        <div class="jugador">🎯<span>Ext Der</span></div>
-      </div>
-  
-      <!-- Línea 3 -->
-      <div class="linea-tactica">
-        <div class="jugador">🛡️<span>Def Izq</span></div>
-        <div class="jugador">🛡️<span>Def Der</span></div>
-      </div>
-  
-      <!-- Línea 4 -->
-      <div class="linea-tactica">
-        <div class="jugador">🧤<span>Portero</span></div>
+
+    <!-- Selector de formación táctica -->
+  <mat-form-field appearance="fill" class="full-width">
+    <mat-label>Formación</mat-label>
+    <mat-select [(value)]="formacionSeleccionada" (selectionChange)="cambiarFormacion($event.value)">
+      <mat-option *ngFor="let formacion of formacionesDisponibles" [value]="formacion">
+        {{ formacion.nombre }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="campo-tactico">
+    <div *ngFor="let cantidad of formacionSeleccionada.disposicion; let i = index" class="linea-tactica">
+      <div *ngFor="let pos of [].constructor(cantidad)" class="jugador">
+        {{ emojiPorLinea(i) }}
+        <span>{{ nombreJugadorEnPosicion(getPosIndex(i, pos, formacionSeleccionada.disposicion)) }}</span>
       </div>
     </div>
-  
-    <h2 class="subtitulo">🪑 Suplentes</h2>
-    <div class="suplentes-scroll">
-      <div class="jugador-suplente" *ngFor="let jugador of jugadoresConvocados">
-        <img
-          class="jugador-foto"
-          [src]="jugador.foto || '/assets/fotos/default.png'"
-          alt="Foto de {{ jugador.nombre }}"
-        />
-        <span>{{ jugador.nombre }}</span>
-      </div>
+  </div>
+
+  <h2 class="subtitulo">🪑 Suplentes</h2>
+  <div class="suplentes-scroll">
+    <div class="jugador-suplente" *ngFor="let jugador of jugadoresConvocados" (click)="seleccionarJugador(jugador)">
+      <img
+        class="jugador-foto"
+        [src]="jugador.foto || '/assets/fotos/default.png'"
+        alt="Foto de {{ jugador.nombre }}"
+      />
+      <span>{{ jugador.nombre }}</span>
     </div>
+  </div>
+
+  <div class="boton-centrado">
+    <button mat-raised-button color="primary" (click)="confirmarAlineacion()">✅ Confirmar Alineación</button>
+  </div>
+</div>
+  
+    
     
