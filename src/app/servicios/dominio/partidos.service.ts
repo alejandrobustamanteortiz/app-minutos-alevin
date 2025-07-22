@@ -28,8 +28,13 @@ export class PartidosService {
       jugadoresConvocados: convocados,
       estado: 'esperando',
       alineaciones: {
-        primeraParte: [],
-        segundaParte: []
+ 
+
+        primeraParteTitulares: [],
+        segundaParteTitulares: [],
+        primeraParteSuplentes: [],
+        segundaParteSuplentes: [],
+
       }
       //creadoEn: Date.now()
     };

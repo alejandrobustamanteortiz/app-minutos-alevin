@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Database, ref, get, push, set, remove } from '@angular/fire/database';
+import { Jugador } from 'src/app/models/jugador.model';
 import { Partido } from 'src/app/models/partido.model';
 
 @Injectable({ providedIn: 'root' })
@@ -60,4 +61,9 @@ eliminarPartido(id: string): Promise<void> {
   const partidoRef = ref(this.db, `partidos/${id}`);
   return remove(partidoRef);
 }
-}
+
+guardarPrimeraParte(jugadores: string[], partidoId: string): Promise<void> {
+  const primeraParteRef = ref(this.db, `partidos/${partidoId}/alineaciones/primeraParte`);
+  return set(primeraParteRef, jugadores);
+
+}}

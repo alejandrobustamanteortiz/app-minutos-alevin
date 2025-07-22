@@ -1,10 +1,7 @@
 <div class="alineacion-page">
-    <h1 class="titulo">🧠 Alineación Titular</h1>
-    <div class="boton-volver">
-      <button routerLink="/inicio" class="btn-volver">⬅️ Volver al Inicio</button>
-    </div>
+  <h1 class="titulo">🧠 Alineación Titular</h1>
 
-    <!-- Selector de formación táctica -->
+  <!-- Selector de formación táctica -->
   <mat-form-field appearance="fill" class="full-width">
     <mat-label>Formación</mat-label>
     <mat-select [(value)]="formacionSeleccionada" (selectionChange)="cambiarFormacion($event.value)">
@@ -14,18 +11,34 @@
     </mat-select>
   </mat-form-field>
 
+  <!-- Campo táctico -->
   <div class="campo-tactico">
-    <div *ngFor="let cantidad of formacionSeleccionada.disposicion; let i = index" class="linea-tactica">
-      <div *ngFor="let pos of [].constructor(cantidad)" class="jugador">
-        {{ emojiPorLinea(i) }}
-        <span>{{ nombreJugadorEnPosicion(getPosIndex(i, pos, formacionSeleccionada.disposicion)) }}</span>
+    <div *ngFor="let cantidad of formacionSeleccionada.disposicion; let lineaIndex = index" class="linea-tactica">
+      <div *ngFor="let pos of [].constructor(cantidad); let posIndex = index" 
+           class="jugador"
+           (click)="seleccionarPosicion(getPosIndex(lineaIndex, posIndex, formacionSeleccionada.disposicion))">
+    
+        <ng-container *ngIf="titularesAsignados[getPosIndex(lineaIndex, posIndex, formacionSeleccionada.disposicion)]; else mostrarIcono">
+          <img
+            class="jugador-foto-campo"
+            [src]="titularesAsignados[getPosIndex(lineaIndex, posIndex, formacionSeleccionada.disposicion)]?.foto || '/assets/fotos/default.png'"
+            alt="Foto de {{ titularesAsignados[getPosIndex(lineaIndex, posIndex, formacionSeleccionada.disposicion)]?.nombre }}"
+          />
+          <span>{{ titularesAsignados[getPosIndex(lineaIndex, posIndex, formacionSeleccionada.disposicion)]?.nombre }}</span>
+        </ng-container>
+    
+        <ng-template #mostrarIcono>
+          <div class="icono-vacio">{{ emojiPorLinea(lineaIndex) }}</div>
+          <span>Vacío</span>
+        </ng-template>
+    
       </div>
     </div>
-  </div>
+    
 
   <h2 class="subtitulo">🪑 Suplentes</h2>
   <div class="suplentes-scroll">
-    <div class="jugador-suplente" *ngFor="let jugador of jugadoresConvocados" (click)="seleccionarJugador(jugador)">
+    <div class="jugador-suplente" *ngFor="let jugador of jugadoresDisponibles" (click)="seleccionarJugador(jugador)">
       <img
         class="jugador-foto"
         [src]="jugador.foto || '/assets/fotos/default.png'"
@@ -36,9 +49,6 @@
   </div>
 
   <div class="boton-centrado">
-    <button mat-raised-button color="primary" (click)="confirmarAlineacion()">✅ Confirmar Alineación</button>
+    <button mat-raised-button color="primary" (click)="guardarPrimeraParte()">✅ Guardar primera parte</button>
   </div>
 </div>
-  
-    
-    

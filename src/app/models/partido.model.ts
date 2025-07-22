@@ -9,8 +9,10 @@ export interface Partido {
   jugadoresConvocados: Jugador[]; // Los jugadores seleccionados para este partido
 
   alineaciones?: {
-    primeraParte: string[]; // IDs de titulares en 1ª parte
-    segundaParte: string[]; // IDs de titulares en 2ª parte
+    primeraParteTitulares: string[]; // IDs de titulares en 1ª parte
+    segundaParteTitulares: string[]; // IDs de titulares en 2ª parte
+    primeraParteSuplentes: string[];
+    segundaParteSuplentes: string[];
   };
 
   estado: 'esperando' | 'live' | 'descanso' | 'finalizado'; // Estado del partido

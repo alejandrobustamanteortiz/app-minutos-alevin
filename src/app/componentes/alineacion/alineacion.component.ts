@@ -1,52 +1,90 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Jugador } from 'src/app/models/jugador.model';
 import { PartidosService } from 'src/app/servicios/dominio/partidos.service';
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import { PartidosFirebaseService } from 'src/app/servicios/firebase/partidos.firebase.service';
 
 @Component({
   selector: 'app-alineacion',
   templateUrl: './alineacion.component.html',
   styleUrls: ['./alineacion.component.css']
 })
-export class AlineacionComponent {
-
+export class AlineacionComponent implements OnInit {
+  partidoId!: string;
   jugadoresConvocados: Jugador[] = [];
-  partidoId: string | undefined
-  titulares: Jugador[]=[]
-  suplentes: Jugador[]=[]
+  jugadoresDisponibles: Jugador[] = [];
+
   formacionesDisponibles = [
     { nombre: '2-3-2', disposicion: [2, 3, 2, 1] },
-    { nombre: '2-1-3-1', disposicion: [1,3, 1, 2, 1] },
-    { nombre: '3-3-1', disposicion: [1, 3, 3, 1] }
+    { nombre: '3-2-2', disposicion: [3, 2, 2, 1] },
+    { nombre: '2-4-1', disposicion: [2, 4, 1, 1] }
   ];
-  formacionSeleccionada = this.formacionesDisponibles[0]; // Por defecto
 
-  constructor(private partidosService: PartidosService, private route: ActivatedRoute){
+  formacionSeleccionada = this.formacionesDisponibles[0];
+
+  // Mapeo de posiciones a jugadores
+  titularesAsignados: { [index: number]: Jugador | null } = {};
+
+  posicionSeleccionada: number | null = null;
+
+  constructor(
+    private route: ActivatedRoute,
+    private partidosService: PartidosService,
+    private partidosFirebaseService: PartidosFirebaseService
+  ) {}
+
+  ngOnInit(): void {
     this.partidoId = this.route.snapshot.paramMap.get('id')!;
     this.partidosService.obtenerPartidoById(this.partidoId).then(partido => {
       this.jugadoresConvocados = partido.jugadoresConvocados || [];
+      this.jugadoresDisponibles = [...this.jugadoresConvocados];
     });
-
-
   }
 
-  cambiarFormacion(formacion: any) {
-    this.formacionSeleccionada = formacion;
-    this.titulares = [];
-    this.suplentes = [...this.jugadoresConvocados];
+  seleccionarPosicion(index: number): void {
+    this.posicionSeleccionada = index;
   }
 
   seleccionarJugador(jugador: Jugador): void {
-    if (this.titulares.length < 8) {
-      this.titulares.push(jugador);
-      this.jugadoresConvocados = this.jugadoresConvocados.filter(j => j.id !== jugador.id);
-    } else {
-      alert('Ya tienes 8 titulares asignados.');
+    if (this.posicionSeleccionada === null) {
+      alert('Selecciona primero una posición en el campo.');
+      return;
     }
+    this.titularesAsignados[this.posicionSeleccionada] = jugador;
+    this.jugadoresDisponibles = this.jugadoresDisponibles.filter(j => j.id !== jugador.id);
+    this.posicionSeleccionada = null; // Reset
   }
 
   nombreJugadorEnPosicion(index: number): string {
-    return this.titulares[index]?.nombre || 'Vacío';
+    return this.titularesAsignados[index]?.nombre || 'Vacío';
+  }
+
+  guardarPrimeraParte(): void {
+    const idsTitulares = Object.values(this.titularesAsignados).map(j => j?.id).filter(id => !!id);
+
+    if (idsTitulares.length !== 8) {
+      alert('Debes seleccionar 8 titulares.');
+      return;
+    }
+
+    this.partidosFirebaseService.guardarPrimeraParte(idsTitulares as string[], this.partidoId);
+    alert('✅ Alineacion primera parte OK.');
+  }
+
+  cambiarFormacion(formacion: any): void {
+    this.formacionSeleccionada = formacion;
+    this.titularesAsignados = {}; // Vaciar titulares
+    this
+    
+    .jugadoresDisponibles = [...this.jugadoresConvocados];
+  }
+
+  getPosIndex(lineaIndex: number, posicionIndex: number, disposicion: number[]): number {
+    let index = 0;
+    for (let i = 0; i < lineaIndex; i++) {
+      index += disposicion[i];
+    }
+    return index + posicionIndex;
   }
 
   emojiPorLinea(lineIndex: number): string {
@@ -58,29 +96,5 @@ export class AlineacionComponent {
       default: return '❓';
     }
   }
-
-  getPosIndex(lineaIndex: number, posicionIndex: number, disposicion: number[]): number {
-    let index = 0;
-    for (let i = 0; i < lineaIndex; i++) {
-      index += disposicion[i];
-    }
-    return index + posicionIndex;
-  }
-
-
-  confirmarAlineacion(): void {
-    const idsTitulares = this.titulares.map(j => j.id);
-    if (idsTitulares.length !== 8) {
-      alert('Debes seleccionar 8 titulares.');
-      return;
-    }
-    //this.partidosService.guardarAlineacionParte(this.partidoId, 'primeraParte', idsTitulares);
-    alert('✅ Alineación guardada.');
-  }
-
-
-
-
-
-
+  
 }
