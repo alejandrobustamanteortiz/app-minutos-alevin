@@ -13,14 +13,16 @@ export class AlineacionComponent implements OnInit {
   partidoId!: string;
   jugadoresConvocados: Jugador[] = [];
   jugadoresDisponibles: Jugador[] = [];
+  jugadoresTitularesPrimeraParte: Jugador[] = []
+  jugadoresSuplentesPrimeraParte: Jugador[] = []
 
   formacionesDisponibles = [
     { nombre: '2-3-2', disposicion: [2, 3, 2, 1] },
-    { nombre: '3-2-2', disposicion: [3, 2, 2, 1] },
-    { nombre: '2-4-1', disposicion: [2, 4, 1, 1] }
+    { nombre: '3-2-2', disposicion: [2, 2, 3, 1] },
+    { nombre: '4-1-2', disposicion: [2, 1, 4, 2] }
   ];
 
-  formacionSeleccionada = this.formacionesDisponibles[0];
+  formacionSeleccionada = this.formacionesDisponibles[2]; //se puede ajustar, ¿cual quieres qué alineacio salta primero
 
   // Mapeo de posiciones a jugadores
   titularesAsignados: { [index: number]: Jugador | null } = {};

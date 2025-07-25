@@ -63,6 +63,7 @@ eliminarPartido(id: string): Promise<void> {
 }
 
 guardarPrimeraParte(jugadores: string[], partidoId: string): Promise<void> {
+  console.log('hello world')
   const primeraParteRef = ref(this.db, `partidos/${partidoId}/alineaciones/primeraParte`);
   return set(primeraParteRef, jugadores);
 

@@ -11,7 +11,8 @@
     </mat-select>
   </mat-form-field>
 
-  <!-- Campo táctico -->
+  <!--  8 Titulares -->
+  <h2 class="subtitulo">🪑  8 titular</h2>
   <div class="campo-tactico">
     <div *ngFor="let cantidad of formacionSeleccionada.disposicion; let lineaIndex = index" class="linea-tactica">
       <div *ngFor="let pos of [].constructor(cantidad); let posIndex = index" 
@@ -36,7 +37,7 @@
     </div>
     
 
-  <h2 class="subtitulo">🪑 Suplentes</h2>
+  <h2 class="subtitulo">🪑  Resto Suplentes</h2>
   <div class="suplentes-scroll">
     <div class="jugador-suplente" *ngFor="let jugador of jugadoresDisponibles" (click)="seleccionarJugador(jugador)">
       <img
