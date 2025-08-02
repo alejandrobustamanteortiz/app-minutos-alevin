@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Database, ref, get, push, set, remove } from '@angular/fire/database';
+import { Database, ref, get, push, set, remove, update } from '@angular/fire/database';
+import { Formacion } from 'src/app/models/formacion.model';
 import { Jugador } from 'src/app/models/jugador.model';
 import { Partido } from 'src/app/models/partido.model';
 
@@ -62,9 +63,24 @@ eliminarPartido(id: string): Promise<void> {
   return remove(partidoRef);
 }
 
-guardarPrimeraParte(jugadores: string[], partidoId: string): Promise<void> {
-  console.log('hello world')
+guardarPrimeraParte(jugadores: Jugador[], partidoId: string): Promise<void> {
   const primeraParteRef = ref(this.db, `partidos/${partidoId}/alineaciones/primeraParte`);
   return set(primeraParteRef, jugadores);
 
-}}
+}
+
+guardarFormacionPrimeraParte(formacion : Formacion, partidoId: string): Promise<void> {
+  const formacionPrimeraParteRef = ref(this.db, `partidos/${partidoId}/formacionPrimeraParte`);
+  return set(formacionPrimeraParteRef, formacion);
+}
+
+modificarPartidoById(id: string, datos: Partial<Partido>): Promise<void> {
+  const partidoRef = ref(this.db, `partidos/${id}`);
+  return update(partidoRef, datos); // Solo actualiza las propiedades que cambian
+}
+
+
+
+
+
+}

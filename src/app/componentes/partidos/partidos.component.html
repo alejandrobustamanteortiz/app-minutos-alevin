@@ -1,6 +1,6 @@
 <div class="partidos-dashboard">
   <h1 class="titulo">Lista de Partidos</h1>
-  <p class="subtitulo">Todos los partidos finalizados, en juego y por jugar.</p>
+
   <div class="boton-volver">
     <button routerLink="/inicio" class="btn-volver">⬅️ Volver al Inicio</button>
   </div>
@@ -29,13 +29,7 @@
         >
           ⚽ Jugar Partido
         </button> -->
-        <button
-          mat-stroked-button
-          color="accent"
-          (click)="editarPartido(partido)"
-        >
-          ✏️ Editar
-        </button>
+
         <button
           mat-stroked-button
           color="warn"
@@ -48,9 +42,8 @@
         <button *ngIf="partido.estado === 'live'" disabled class="estado-live">
           🟢 EN JUEGO
         </button>
-        <button (click)="verPartidoDesdeFirebase(partido.id)">📡 Ver desde Firebase</button>
         <button [routerLink]="['/alineacion', partido.id]" class="btn-alineacion">
-          ⬅️ Ir a Alineación
+          ⬅️ Pizarra
         </button>
 
       </div>

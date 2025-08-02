@@ -27,6 +27,23 @@
           </mat-form-field>
         </div>
 
+          <!-- Estado partido -->
+        <div class="campo">
+          <label for="estado">🏟️ Estado partido</label>
+          <mat-form-field appearance="fill" class="mat-form-dark full-width">
+            <mat-select
+              id="estado"
+              formControlName="estado"
+              placeholder="Selecciona..."
+            >
+              <mat-option value="esperando">esperando</mat-option>
+              <mat-option value="live">live</mat-option>
+              <mat-option value="descanso">descanso</mat-option>
+              <mat-option value="descanso">finalizado</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
         <!-- Rival -->
         <div class="campo">
           <label for="rival">🏟️ Rival</label>

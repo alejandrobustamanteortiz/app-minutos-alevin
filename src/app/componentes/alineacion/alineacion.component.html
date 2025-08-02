@@ -1,5 +1,16 @@
 <div class="alineacion-page">
-  <h1 class="titulo">🧠 Alineación Titular</h1>
+ <div *ngIf="partido">
+  <h1 class="titulo">🧠 Pizarra Partido</h1>
+
+  <h3 class="titulo">
+    El estado del partido es: <span class="estado">{{ partido.estado }}</span>
+  </h3>
+
+  <div class="boton-volver">
+    <button routerLink="/inicio" class="btn-volver">⬅️ Volver al Inicio</button>
+  </div>
+</div>
+
 
   <!-- Selector de formación táctica -->
   <mat-form-field appearance="fill" class="full-width">
@@ -12,9 +23,9 @@
   </mat-form-field>
 
   <!--  8 Titulares -->
-  <h2 class="subtitulo">🪑  8 titular</h2>
+  <h2 class="subtitulo">🪑  8 Titular</h2>
   <div class="campo-tactico">
-    <div *ngFor="let cantidad of formacionSeleccionada.disposicion; let lineaIndex = index" class="linea-tactica">
+    <div *ngFor="let cantidad of formacionSeleccionada?.disposicion; let lineaIndex = index" class="linea-tactica">
       <div *ngFor="let pos of [].constructor(cantidad); let posIndex = index" 
            class="jugador"
            (click)="seleccionarPosicion(getPosIndex(lineaIndex, posIndex, formacionSeleccionada.disposicion))">
@@ -37,9 +48,10 @@
     </div>
     
 
-  <h2 class="subtitulo">🪑  Resto Suplentes</h2>
+  <h2 class="subtitulo">🪑  Resto Suplentes 🪑</h2>
   <div class="suplentes-scroll">
-    <div class="jugador-suplente" *ngFor="let jugador of jugadoresDisponibles" (click)="seleccionarJugador(jugador)">
+
+    <div class="jugador-suplente" *ngFor="let jugador of jugadoresSuplentesPrimeraParte" (click)="seleccionarJugador(jugador)">
       <img
         class="jugador-foto"
         [src]="jugador.foto || '/assets/fotos/default.png'"
@@ -51,5 +63,9 @@
 
   <div class="boton-centrado">
     <button mat-raised-button color="primary" (click)="guardarPrimeraParte()">✅ Guardar primera parte</button>
+    <hr><hr><hr>
+    <button mat-raised-button color="primary" (click)="addFormacion()">✅ Guardar formacion</button>
+    <button mat-raised-button color="primary" (click)="deleteFormacion()"> Borrar formacion</button>
+    <button mat-raised-button color="primary" (click)="obtenerFormaciones()"> Obtener formaciones</button>
   </div>
 </div>

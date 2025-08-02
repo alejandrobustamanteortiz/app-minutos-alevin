@@ -26,7 +26,7 @@ export class PartidosService {
         form.fechaPartido instanceof Date ? form.fechaPartido.getTime() : null,
       duracionParte: form.duracionParte,
       jugadoresConvocados: convocados,
-      estado: 'esperando',
+      estado: form.estado,
       alineaciones: {
  
 
@@ -34,6 +34,7 @@ export class PartidosService {
         segundaParteTitulares: [],
         primeraParteSuplentes: [],
         segundaParteSuplentes: [],
+        primeraParte: []
 
       }
       //creadoEn: Date.now()

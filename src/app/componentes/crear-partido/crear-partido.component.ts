@@ -40,6 +40,7 @@ export class CrearPartidoComponent implements OnInit {
   ngOnInit(): void {
     this.partidoForm = this.fb.group({
       tipoPartido: ['', Validators.required],
+      estado: ['', Validators.required],
       jornadaPartido: [''],
       rival: ['', Validators.required],
       fechaPartido: ['', Validators.required],
@@ -49,6 +50,7 @@ export class CrearPartidoComponent implements OnInit {
     // ✅ Cargar jugadores desde el servicio
     this.jugadoresService.obtenerJugadores().then(jugadores => {
       this.jugadoresDisponibles = jugadores;
+      
     });
   }
 

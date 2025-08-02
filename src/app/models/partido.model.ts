@@ -1,3 +1,4 @@
+import { Formacion } from './formacion.model';
 import { Jugador } from './jugador.model';
 
 export interface Partido {
@@ -6,11 +7,15 @@ export interface Partido {
   fechaPartido: Date | number; // Mejor si lo guardás como timestamp en Firebase (número)
   jugadoresConvocados: Jugador[]; // Los jugadores seleccionados para este partido
   alineaciones?: {
-    primeraParteTitulares: string[]; // IDs de titulares en 1ª parte
+    primeraParteTitulares: Jugador[]; // IDs de titulares en 1ª parte
     segundaParteTitulares: string[]; // IDs de titulares en 2ª parte
-    primeraParteSuplentes: string[];
+    primeraParteSuplentes: Jugador[];
     segundaParteSuplentes: string[];
+    primeraParte: Jugador[]
   };
+
+  formacionPrimeraParte?: Formacion
+  formacionSegundaParte?: Formacion
   estado: 'esperando' | 'live' | 'descanso' | 'finalizado'; // Estado del partido
   rival: string; // Nombre del rival
   tipoPartido: 'amistoso' | 'liga' | 'torneo';

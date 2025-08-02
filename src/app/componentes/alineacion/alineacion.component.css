@@ -14,6 +14,13 @@
   text-align: center;
 }
 
+.estado {
+  font-weight: bold;
+  color: green;
+  text-transform: capitalize;
+}
+
+
 .subtitulo {
   font-size: 1.2rem;
   margin-bottom: 0.5rem;
