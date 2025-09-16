@@ -69,8 +69,19 @@ guardarPrimeraParte(jugadores: Jugador[], partidoId: string): Promise<void> {
 
 }
 
+guardarSegundaParte(jugadores: Jugador[], partidoId: string): Promise<void> {
+  const primeraParteRef = ref(this.db, `partidos/${partidoId}/alineaciones/segundaParte`);
+  return set(primeraParteRef, jugadores);
+
+}
+
 guardarFormacionPrimeraParte(formacion : Formacion, partidoId: string): Promise<void> {
   const formacionPrimeraParteRef = ref(this.db, `partidos/${partidoId}/formacionPrimeraParte`);
+  return set(formacionPrimeraParteRef, formacion);
+}
+
+guardarFormacionSegundaParte(formacion : Formacion, partidoId: string): Promise<void> {
+  const formacionPrimeraParteRef = ref(this.db, `partidos/${partidoId}/formacionSegundaParte`);
   return set(formacionPrimeraParteRef, formacion);
 }
 
@@ -78,6 +89,12 @@ modificarPartidoById(id: string, datos: Partial<Partido>): Promise<void> {
   const partidoRef = ref(this.db, `partidos/${id}`);
   return update(partidoRef, datos); // Solo actualiza las propiedades que cambian
 }
+
+async actualizarJugadoresConvocados(partidoId: string, jugadores: Jugador[]): Promise<void> {
+  const partidoRef = ref(this.db, `partidos/${partidoId}/jugadoresConvocados`);
+  return set(partidoRef, jugadores);
+}
+
 
 
 

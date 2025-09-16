@@ -22,22 +22,22 @@ export class PartidosService {
       tipoPartido: form.tipoPartido,
       jornadaPartido: form.jornadaPartido || '',
       rival: form.rival,
-      fechaPartido:
-        form.fechaPartido instanceof Date ? form.fechaPartido.getTime() : null,
+      fechaPartido: form.fechaPartido instanceof Date ? form.fechaPartido.getTime() : null,
       duracionParte: form.duracionParte,
       jugadoresConvocados: convocados,
       estado: form.estado,
       alineaciones: {
- 
-
         primeraParteTitulares: [],
         segundaParteTitulares: [],
         primeraParteSuplentes: [],
         segundaParteSuplentes: [],
-        primeraParte: []
-
+        primeraParte: [],
+        segundaParte: []
       }
       //creadoEn: Date.now()
+      ,
+      estadoPrimeraParte: 'esperando',
+      estadoSegundaParte: 'esperando'
     };
 
     return this.firebase.guardarPartido(partido);
@@ -57,4 +57,24 @@ export class PartidosService {
   eliminarPartido(id: string): Promise<void> {
     return this.firebase.eliminarPartido(id);
   }
+
+ 
+iniciarPrimeraParte(partido: Partido): Promise<void> {
+  // Cambiamos el estado de la primera parte a "live"
+  return this.firebase.modificarPartidoById(partido.id!, { estadoPrimeraParte: 'live' });
+}
+iniciarSegundaParte(partido: Partido): Promise<void> {
+  // Cambiamos el estado de la primera parte a "live"
+  return this.firebase.modificarPartidoById(partido.id!, { estadoSegundaParte: 'live', estadoPrimeraParte: 'finalizado' });
+}
+
+finalizarPrimeraParte(partido: Partido): Promise<void> {
+  return this.firebase.modificarPartidoById(partido.id!, { estadoPrimeraParte: 'descanso' });
+}
+finalizarSegundaParte(partido: Partido): Promise<void> {
+  return this.firebase.modificarPartidoById(partido.id!, { estadoSegundaParte: 'finalizado' });
+}
+
+
+
 }

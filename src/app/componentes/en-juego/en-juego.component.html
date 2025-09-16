@@ -1,24 +1,40 @@
 <div class="en-juego-page">
-  <h1 class="titulo">{{rival}}</h1>
-  <!-- <h3>{{fechaInicio| date : "dd/MM/yyy"}}</h3> -->
+  <h1 class="titulo">⚽ Partido contra {{ rival }}</h1>
 
   <!-- 🎛️ Panel de control -->
   <div class="panel-control">
-    <!-- <div class="cronometro">{{ tiempo }}</div> -->
+    <div class="cronometro">{{ tiempo$ | async }}</div>
     <div class="botones-control">
-      <!-- <button (click)="iniciarPartido()" [disabled]="partidoEnCurso">▶️ Iniciar</button> -->
-      <!-- <button (click)="finalizarPartido()">⛔ Finalizar</button> -->
+      
+      <!-- Iniciar 1ª Parte -->
+       <button *ngIf="estadoPrimeraParte === 'esperando'" (click)="iniciarPrimeraParte()">▶️ Iniciar 1ª Parte</button>
+       <button *ngIf="estadoPrimeraParte === 'descanso'" (click)="iniciarSegundaParte()">▶️ Iniciar 2ª Parte</button>
+       <button *ngIf="estadoPrimeraParte === 'live'"(click)="finalizarPrimeraParte()">⛔ Finalizar 1ª Parte</button>
+       <button *ngIf="estadoSegundaParte === 'live'"(click)="finalizarSegundaParte()">⛔ Finalizar 2ª Parte</button>
+        <!-- Ajustes Segunda parte  -->
+         <button *ngIf="estadoPrimeraParte === 'descanso'" [routerLink]="['/alineacion', partidoId]">
+           ⚙️ Ajustes 2ª Parte
+        </button>
     </div>
   </div>
 
   <!-- 🟩 Jugadores en el campo -->
+  <h2 class="subtitulo">Titulares</h2>
   <div class="campo-juego">
     <div class="linea-jugadores">
       <div class="jugador-en-campo" *ngFor="let jugador of titulares">
         <img [src]="jugador.foto || '/assets/fotos/default.png'" class="avatar" />
+        <br>
         <span class="nombre">{{ jugador.nombre }}</span>
-        <!-- <small class="minutos">{{ minutos[jugador.id!] || 0 }}'</small> -->
-        <!-- <button (click)="sustituir(jugador)">🔁</button> -->
+        <br>
+
+        <!-- ⏱️ Minutos jugados -->
+        <ng-container *ngIf="minutos$ | async as minutos">
+          <span class="minutos">{{ minutos[jugador.id!] || 0 }}'</span>
+        </ng-container> <br>
+
+        <!-- 🔁 Botón salir -->
+        <button class="btn-accion salir">⏏️ Salir</button>
       </div>
     </div>
   </div>
@@ -29,21 +45,18 @@
     <div class="jugador-suplente" *ngFor="let jugador of suplentes">
       <img [src]="jugador.foto || '/assets/fotos/default.png'" class="avatar-mini" />
       <span>{{ jugador.nombre }}</span>
-      <!-- <button (click)="meterAlCampo(jugador)">👟 Entrar</button> -->
+
+      <!-- ⏱️ Minutos jugados -->
+      <ng-container *ngIf="minutos$ | async as minutos">
+        <span class="minutos">{{ minutos[jugador.id!] || 0 }}'</span>
+      </ng-container>
+
+      <!-- 🔁 Botón entrar -->
+      <button class="btn-accion entrar">👟 Entrar</button>
     </div>
   </div>
 
-  <!-- 📊 Estadísticas -->
-  <div class="estadisticas">
-    <h3>📊 Estadísticas del partido</h3>
-    <ul>
-      <li *ngFor="let jugador of titulares">
-        <!-- {{ jugador.nombre }}: {{ minutos[jugador.id!] || 0 }} minutos jugados -->
-      </li>
-    </ul>
-  </div>
-
-  <!-- ⬅️ Botón volver al final -->
+  <!-- ⬅️ Botón volver -->
   <div class="boton-volver">
     <button routerLink="/inicio" class="btn-volver">⬅️ Volver al inicio</button>
   </div>

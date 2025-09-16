@@ -103,8 +103,9 @@
 }
 
 .minutos {
-  font-size: 0.85rem;
-  color: #ccc;
+  font-size: 1.55rem;
+  color: #0ccf1c;
+  font-weight: bold;
 }
 
 .jugador-en-campo button {
@@ -196,3 +197,33 @@
   background: #1565c0;
   transform: translateY(-2px);
 }
+
+.btn-accion {
+  margin-top: 6px;
+  padding: 4px 8px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  color: white;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.btn-accion.entrar {
+  background: #00c853;
+}
+
+.btn-accion.entrar:hover {
+  background: #009624;
+  transform: translateY(-2px);
+}
+
+.btn-accion.salir {
+  background: #e53935;
+}
+
+.btn-accion.salir:hover {
+  background: #b71c1c;
+  transform: translateY(-2px);
+}
+

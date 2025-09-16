@@ -38,12 +38,29 @@
         >
           🗑️ Eliminar
         </button>
-        <!-- Estado en juego -->
-        <button *ngIf="partido.estado === 'live'" disabled class="estado-live">
-          🟢 EN JUEGO
+        <!-- Primera Parte -->
+        <button *ngIf="partido.estadoPrimeraParte === 'live'" [routerLink]="['/en-juego', partido.id]">
+          🟢 Ir a  Primera parte
         </button>
-        <button [routerLink]="['/alineacion', partido.id]" class="btn-alineacion">
-          ⬅️ Pizarra
+          <!-- Comenzar partido -->
+        <button *ngIf="partido.estadoPrimeraParte === 'esperando'" [routerLink]="['/en-juego', partido.id]">
+          🟢 Comenzar partido
+        </button>
+         <!-- Descanso -->
+        <button *ngIf="partido.estadoPrimeraParte === 'descanso'" [routerLink]="['/en-juego', partido.id]">
+          🟢 Ir a Descanso
+        </button>
+        <!-- Iniciar Partido -->
+        <button *ngIf="partido.estado == 'descanso'" [routerLink]="['/en-juego', partido.id]" >
+          🟢 Iniciar Segunda parte
+        </button>
+        <!-- Ajustes Primera parte  -->
+         <button *ngIf="partido.estadoPrimeraParte === 'esperando'" [routerLink]="['/alineacion', partido.id]">
+           ⚙️ Ajustes 1ª Parte
+        </button>
+         <!-- Ajustes Segunda parte  -->
+         <button *ngIf="partido.estadoPrimeraParte === 'descanso'" [routerLink]="['/alineacion', partido.id]">
+           ⚙️ Ajustes 2ª Parte
         </button>
 
       </div>

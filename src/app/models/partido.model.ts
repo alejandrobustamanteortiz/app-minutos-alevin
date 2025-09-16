@@ -12,11 +12,14 @@ export interface Partido {
     primeraParteSuplentes: Jugador[];
     segundaParteSuplentes: string[];
     primeraParte: Jugador[]
+    segundaParte: Jugador[]
   };
 
   formacionPrimeraParte?: Formacion
   formacionSegundaParte?: Formacion
   estado: 'esperando' | 'live' | 'descanso' | 'finalizado'; // Estado del partido
+  estadoPrimeraParte?: 'esperando' | 'live' | 'descanso' | 'finalizado'; //Estado primera parte
+  estadoSegundaParte?: 'esperando' | 'live' | 'finalizado'; //Estado segunda parte
   rival: string; // Nombre del rival
   tipoPartido: 'amistoso' | 'liga' | 'torneo';
   jornadaPartido: string; // Ej: "Jornada 5", "Playoff 1", etc.
