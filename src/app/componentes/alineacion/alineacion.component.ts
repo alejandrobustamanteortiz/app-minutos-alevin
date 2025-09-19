@@ -48,7 +48,7 @@ export class AlineacionComponent implements OnInit {
       const estado = partido.estado; // Suponiendo que tiene un campo "estado"
 
       switch (estado) {
-        case 'esperando':
+        case 'sin comenzar':
           this.inicializarPorComenzar(partido);
           break;
 
@@ -89,16 +89,36 @@ export class AlineacionComponent implements OnInit {
   }
 
   seleccionarJugador(jugador: Jugador): void {
-    if (this.posicionSeleccionada === null) {
-      alert('Selecciona primero una posición en el campo.');
-      return;
-    }
-    this.titularesAsignados[this.posicionSeleccionada] = jugador;
-    this.jugadoresDisponibles = this.jugadoresDisponibles.filter(
-      (j) => j.id !== jugador.id
-    );
-    this.posicionSeleccionada = null; // Reset
+  if (this.posicionSeleccionada === null) {
+    alert('Selecciona primero una posición en el campo.');
+    return;
   }
+    const jugadorActual = this.titularesAsignados[this.posicionSeleccionada];
+
+  
+
+  // nuevo codigo
+
+   if (jugadorActual) {
+    // 🔁 Si ya había un titular en esa posición → lo mandamos al banquillo
+    this.jugadoresSuplentesPrimeraParte.push(jugadorActual);
+  }
+  
+
+
+  // 🔹 Insertar suplente directamente en el hueco
+  this.titularesAsignados[this.posicionSeleccionada] = jugador;
+
+  // 🔹 Quitar de disponibles
+  this.jugadoresSuplentesPrimeraParte= this.jugadoresSuplentesPrimeraParte.filter(
+    (j) => j.id !== jugador.id
+  );
+
+  this.posicionSeleccionada = null; // Reset
+}
+
+
+  
 
   guardarPrimeraParte(): void {
     const titulares = Object.values(this.titularesAsignados).filter(
@@ -109,6 +129,7 @@ export class AlineacionComponent implements OnInit {
       alert('Debes seleccionar 8 titulares.');
       return;
     }
+    
 
     // 🔹 Convocados originales
     const convocados = this.partido.jugadoresConvocados || [];
@@ -174,11 +195,24 @@ export class AlineacionComponent implements OnInit {
     alert('✅ Alineación segunda parte OK.');
   }
 
-  cambiarFormacion(formacion: any): void {
-    this.formacionSeleccionada = formacion;
-    this.titularesAsignados = {}; // Vaciar titulares
-    this.jugadoresDisponibles = [...this.jugadoresDisponibles];
-  }
+  cambiarFormacion(formacion: Formacion): void {
+  this.formacionSeleccionada = formacion;
+
+  // 🔹 Inicializar cada posición de la formación en null
+  this.titularesAsignados = {};
+  formacion.disposicion.forEach((linea, lineaIndex) => {
+    for (let pos = 0; pos < linea; pos++) {
+      const index = this.getPosIndex(lineaIndex, pos, formacion.disposicion);
+      this.titularesAsignados[index] = null;
+    }
+  });
+
+  // Todos los jugadores vuelven a estar disponibles
+  console.log("hello")
+  this.jugadoresDisponibles = [...this.partido.jugadoresConvocados!];
+  this.jugadoresSuplentesPrimeraParte = [...this.partido.jugadoresConvocados!];
+}
+
 
   getPosIndex(
     lineaIndex: number,
@@ -247,6 +281,8 @@ export class AlineacionComponent implements OnInit {
     this.jugadoresSuplentesPrimeraParte = todosLosJugadores.filter(
       (j) => !titularesArray.some((t) => t.id === j.id)
     );
+    console.log("titulares: " +this.titularesAsignados)
+    console.log("suplentes: " +this.jugadoresSuplentesPrimeraParte)
   }
   inicializarEnJuego(partido: Partido) {}
   inicializarFinalizado(partido: Partido) {}

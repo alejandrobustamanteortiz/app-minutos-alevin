@@ -1,3 +1,4 @@
+import { Evento } from './evento.model';
 import { Formacion } from './formacion.model';
 import { Jugador } from './jugador.model';
 
@@ -7,20 +8,22 @@ export interface Partido {
   fechaPartido: Date | number; // Mejor si lo guardás como timestamp en Firebase (número)
   jugadoresConvocados: Jugador[]; // Los jugadores seleccionados para este partido
   alineaciones?: {
-    primeraParteTitulares: Jugador[]; // IDs de titulares en 1ª parte
-    segundaParteTitulares: string[]; // IDs de titulares en 2ª parte
-    primeraParteSuplentes: Jugador[];
-    segundaParteSuplentes: string[];
     primeraParte: Jugador[]
     segundaParte: Jugador[]
   };
+  eventos?: Evento
 
   formacionPrimeraParte?: Formacion
   formacionSegundaParte?: Formacion
-  estado: 'esperando' | 'live' | 'descanso' | 'finalizado'; // Estado del partido
+  estado: 'sin comenzar' | 'esperando' | 'live' | 'descanso' | 'finalizado'; // Estado del partido
   estadoPrimeraParte?: 'esperando' | 'live' | 'descanso' | 'finalizado'; //Estado primera parte
   estadoSegundaParte?: 'esperando' | 'live' | 'finalizado'; //Estado segunda parte
   rival: string; // Nombre del rival
   tipoPartido: 'amistoso' | 'liga' | 'torneo';
   jornadaPartido: string; // Ej: "Jornada 5", "Playoff 1", etc.
+   inicioPrimeraParte?: number;
+  finPrimeraParte?: number;
+
+  inicioSegundaParte?: number;
+  finSegundaParte?: number;
 }

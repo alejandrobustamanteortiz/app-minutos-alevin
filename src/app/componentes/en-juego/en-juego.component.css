@@ -227,3 +227,25 @@
   transform: translateY(-2px);
 }
 
+
+.boton-swap {
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+.btn-swap {
+  background: #ff9800;
+  color: white;
+  padding: 0.7rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.btn-swap:hover {
+  background: #e68900;
+  transform: scale(1.05);
+}

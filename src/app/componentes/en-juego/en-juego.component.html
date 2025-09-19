@@ -21,43 +21,55 @@
   <!-- 🟩 Jugadores en el campo -->
   <h2 class="subtitulo">Titulares</h2>
   <div class="campo-juego">
-    <div class="linea-jugadores">
-      <div class="jugador-en-campo" *ngFor="let jugador of titulares">
-        <img [src]="jugador.foto || '/assets/fotos/default.png'" class="avatar" />
-        <br>
-        <span class="nombre">{{ jugador.nombre }}</span>
-        <br>
+  <div class="linea-jugadores">
+    <div class="jugador-en-campo" *ngFor="let jugador of titulares">
+      <img [src]="jugador.foto || '/assets/fotos/default.png'" class="avatar" />
+      <br>
+      <span class="nombre">{{ jugador.nombre }}</span>
+      <br>
 
-        <!-- ⏱️ Minutos jugados -->
-        <ng-container *ngIf="minutos$ | async as minutos">
-          <span class="minutos">{{ minutos[jugador.id!] || 0 }}'</span>
-        </ng-container> <br>
+      <ng-container *ngIf="minutos$ | async as minutos">
+        <span class="minutos">{{ minutos[jugador.id!] || 0 }}'</span>
+      </ng-container> <br>
 
-        <!-- 🔁 Botón salir -->
-        <button class="btn-accion salir">⏏️ Salir</button>
-      </div>
+      <!-- Seleccionar titular que va a salir -->
+      <button class="btn-accion salir" (click)="seleccionarTitular(jugador)">
+        ⏏️ Salir
+      </button>
     </div>
   </div>
+</div>
 
   <!-- 🪑 Suplentes -->
   <h2 class="subtitulo">🪑 Suplentes</h2>
   <div class="suplentes-lista">
-    <div class="jugador-suplente" *ngFor="let jugador of suplentes">
-      <img [src]="jugador.foto || '/assets/fotos/default.png'" class="avatar-mini" />
-      <span>{{ jugador.nombre }}</span>
+  <div class="jugador-suplente" *ngFor="let jugador of suplentes">
+    <img [src]="jugador.foto || '/assets/fotos/default.png'" class="avatar-mini" />
+    <span>{{ jugador.nombre }}</span>
 
-      <!-- ⏱️ Minutos jugados -->
-      <ng-container *ngIf="minutos$ | async as minutos">
-        <span class="minutos">{{ minutos[jugador.id!] || 0 }}'</span>
-      </ng-container>
+    <ng-container *ngIf="minutos$ | async as minutos">
+      <span class="minutos">{{ minutos[jugador.id!] || 0 }}'</span>
+    </ng-container>
 
-      <!-- 🔁 Botón entrar -->
-      <button class="btn-accion entrar">👟 Entrar</button>
-    </div>
+    <!-- Seleccionar suplente que entra -->
+    <button class="btn-accion entrar" (click)="seleccionarSuplente(jugador)">
+      👟 Entrar
+    </button>
   </div>
+</div>
+
+<div class="boton-swap" *ngIf="titularSeleccionado && suplenteSeleccionado">
+  <button class="btn-swap" (click)="cambiarJugador(titularSeleccionado, suplenteSeleccionado)">
+    🔄 Confirmar cambio: Sale: {{ titularSeleccionado?.nombre }} Entra: {{ suplenteSeleccionado?.nombre }}
+  </button>
+</div>
+
+
 
   <!-- ⬅️ Botón volver -->
   <div class="boton-volver">
     <button routerLink="/inicio" class="btn-volver">⬅️ Volver al inicio</button>
   </div>
 </div>
+
+

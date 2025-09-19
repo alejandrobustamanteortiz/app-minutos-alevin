@@ -27,10 +27,6 @@ export class PartidosService {
       jugadoresConvocados: convocados,
       estado: form.estado,
       alineaciones: {
-        primeraParteTitulares: [],
-        segundaParteTitulares: [],
-        primeraParteSuplentes: [],
-        segundaParteSuplentes: [],
         primeraParte: [],
         segundaParte: []
       }
@@ -61,18 +57,18 @@ export class PartidosService {
  
 iniciarPrimeraParte(partido: Partido): Promise<void> {
   // Cambiamos el estado de la primera parte a "live"
-  return this.firebase.modificarPartidoById(partido.id!, { estadoPrimeraParte: 'live' });
+  return this.firebase.modificarPartidoById(partido.id!, { estadoPrimeraParte: 'live', estado: 'live', inicioPrimeraParte: Date.now() });
 }
 iniciarSegundaParte(partido: Partido): Promise<void> {
   // Cambiamos el estado de la primera parte a "live"
-  return this.firebase.modificarPartidoById(partido.id!, { estadoSegundaParte: 'live', estadoPrimeraParte: 'finalizado' });
+  return this.firebase.modificarPartidoById(partido.id!, { estadoSegundaParte: 'live', estadoPrimeraParte: 'finalizado', estado: 'live' });
 }
 
 finalizarPrimeraParte(partido: Partido): Promise<void> {
-  return this.firebase.modificarPartidoById(partido.id!, { estadoPrimeraParte: 'descanso' });
+  return this.firebase.modificarPartidoById(partido.id!, { estadoPrimeraParte: 'descanso', estado: 'descanso' });
 }
 finalizarSegundaParte(partido: Partido): Promise<void> {
-  return this.firebase.modificarPartidoById(partido.id!, { estadoSegundaParte: 'finalizado' });
+  return this.firebase.modificarPartidoById(partido.id!, { estadoSegundaParte: 'finalizado', estado: 'finalizado' });
 }
 
 

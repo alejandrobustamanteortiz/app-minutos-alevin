@@ -15,6 +15,8 @@ export class EnJuegoComponent implements OnInit {
   titulares: Jugador[] = [];
   suplentes: Jugador[] = [];
   rival?: string;
+  titularSeleccionado: Jugador | null = null;
+  suplenteSeleccionado: Jugador | null = null;
 
   tiempo$ = this.cronometroService.tiempo$;
   minutos$ = this.cronometroService.minutos$;
@@ -67,17 +69,28 @@ export class EnJuegoComponent implements OnInit {
   async iniciarPrimeraParte() {
   this.partidoEnCurso = true;
 
+  // 🔹 Iniciar cronómetro con titulares
+  this.cronometroService.iniciarCrono(this.partidoId, this.titulares);
+
+  this.partidosService.iniciarPrimeraParte({
+    id: this.partidoId,
+    estadoPrimeraParte: 'live',
+  } as Partido);
+
+  this.estadoPrimeraParte = 'live';
+
   // Llamamos al servicio para actualizar Firebase
   await this.partidosService.iniciarPrimeraParte({
     id: this.partidoId,
-    estadoPrimeraParte: 'live'
+    estadoPrimeraParte: 'live',
+    
   } as Partido);
 
   // Actualizamos el estado local para la UI
   this.estadoPrimeraParte = 'live';
 
   // Si quieres iniciar cronómetro
-  // this.cronometroService.iniciarCrono(this.partidoId);
+   this.cronometroService.iniciar();
 }
 
   async iniciarSegundaParte() {
@@ -110,7 +123,9 @@ async finalizarPrimeraParte() {
   this.estadoPrimeraParte = 'descanso';
 
   // Detener cronómetro si es necesario
-  // this.cronometroService.detenerCrono(this.partidoId);
+   this.cronometroService.pausar();
+   this.cronometroService.reiniciar();
+   this.cronometroService.detenerCrono();
 }
 
 
@@ -133,4 +148,40 @@ async finalizarSegundaParte() {
   // Detener cronómetro si es necesario
   // this.cronometroService.detenerCrono(this.partidoId);
 }
+
+seleccionarTitular(j: Jugador) {
+  this.titularSeleccionado = j;
+  console.log("Titular seleccionado:", j.nombre);
+}
+
+seleccionarSuplente(j: Jugador) {
+  this.suplenteSeleccionado = j;
+  console.log("Suplente seleccionado:", j.nombre);
+}
+
+cambiarJugador(sale: Jugador, entra: Jugador) {
+  // 1. Quitar titular
+  this.titulares = this.titulares.filter(j => j.id !== sale.id);
+
+  // 2. Añadir suplente como titular
+  entra.enCampo = true;
+  this.titulares.push(entra);
+
+  // 3. Quitar suplente de la lista
+  this.suplentes = this.suplentes.filter(j => j.id !== entra.id);
+
+  // 4. Añadir titular que salió a suplentes
+  sale.enCampo = false;
+  this.suplentes.push(sale);
+
+  // 🔹 Importante: actualizar en el cronómetro
+  this.cronometroService.actualizarTitulares(this.titulares);
+
+  this.titularSeleccionado = null
+  this.suplenteSeleccionado = null
+
+  console.log(`Sustitución: Sale ${sale.nombre}, entra ${entra.nombre}`);
+}
+
+
 }
